@@ -1,0 +1,68 @@
+1
+Medicina General
+3500
+1
+Cardiología
+7000
+1
+Pediatría
+4800
+2
+Juan
+Pérez
+12345678
+1990-09-11
+2024-03-23
+098765432
+1
+2
+Marcos
+Sobrero
+23456789
+1991-11-11
+2024-02-11
+097654321
+2
+3
+Martha
+Pino
+34567890
+1987-05-22
+2023-08-11
+093456765
+Medicina General
+3
+Tomás
+Veiga
+25467890
+1957-03-12
+2023-09-21
+093446765
+Cardiología
+4
+Medicina General
+Martha Pino
+2024-05-11
+3
+5
+Medicina General
+1
+12345678
+2
+6
+1
+Medicina General
+6
+2
+Pediatría
+6
+3
+6
+4
+2024-05-10
+2024-05-12
+6
+5
+2024-05-10
+2024-05-12
+8

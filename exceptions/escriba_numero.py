@@ -1,0 +1,2 @@
+class EscribaNumero(Exception):
+    pass

@@ -1,3 +1,4 @@
+from entities.especialidad import Especialidad
 
 class Policlinica:
     def __init__(self):
@@ -20,6 +21,7 @@ class Policlinica:
     
     
     def dar_alta_especialidad_mini(self, nombre_especialidad, precio):
-        self.__lista_de_especialidades.append(nombre_especialidad, precio)
+        especialidad = Especialidad(nombre_especialidad, precio)        #crea un objeto esp parea agregarlo a la lista
+        self.__lista_de_especialidades.append(especialidad)
         
 

@@ -1,24 +1,30 @@
 from entities.policlinica import Policlinica
+from exceptions.error_tipeo import ErrorTipeo
 
 
-def dar_alta_especialidad(nombre_especialidad, precio):
-        repetir = True
+
+def dar_alta_especialidad():
+        repetir1 = True
         repetir2 = True
-        while repetir:
-            nombre_especialidad = input("Ingrese el nombre de la especialidad")
-            if nombre_especialidad == "" or type[nombre_especialidad] == float or type[nombre_especialidad] == int:
-                print("El nombre de la especialidad es incorrecto, ingréselo nuevamente")
-            else:
-                repetir = False
-                while repetir2:
-                    precio = int(input("Ingrese el precio asociado"))
-                    if type[precio] != int:
-                        print("El precio de la especialidad es incorrecto, ingréselo nuevamente")
-                    else:
-                        repetir2 = False
-                        print("la especialidad se ha creado con exito")
-                        Policlinica.dar_alta_especialidad_mini(nombre_especialidad, precio)
+        while repetir1:
+            try:
+                nombre_especialidad = input("Ingrese el nombre de la especialidad :")
+                if not all(c.isalpha() or c.isspace() for c in nombre_especialidad) or nombre_especialidad == "":       #si no hay escrito texto, con o sin espacio
+                    raise ErrorTipeo("El nombre de la especialidad es incorrecto, ingréselo nuevamente")
+                else: break
+                    
+            except ErrorTipeo as e:
+                            print (e)
 
+        while repetir2:
+            try:                                                                              
+                precio = int(input("Ingrese el precio asociado :"))                               
+                repetir2 = False
+                print("la especialidad se ha creado con exito")
+                policlinica.dar_alta_especialidad_mini(nombre_especialidad, precio)
+            except ValueError as e:
+                print ("El precio de la especialidad es incorrecto, ingréselo nuevamente")
+           
 def menu():
     repetir=True
     while repetir:
@@ -37,9 +43,11 @@ def menu():
         if pregunta_inicial == 1:
             dar_alta_especialidad()
 
+        
+
+
         if pregunta_inicial == 2:
             pass
-
         if pregunta_inicial == 3:
             pass
         if pregunta_inicial == 4:
@@ -53,5 +61,5 @@ def menu():
             print("Fin")
             
 if __name__ == "__main__":
-    menu()
     policlinica = Policlinica()
+    menu()

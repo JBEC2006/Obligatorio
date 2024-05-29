@@ -1,0 +1,2 @@
+class ErrorTipeo(Exception):
+    pass
