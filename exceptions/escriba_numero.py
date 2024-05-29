@@ -1,2 +1,0 @@
-class EscribaNumero(Exception):
-    pass
