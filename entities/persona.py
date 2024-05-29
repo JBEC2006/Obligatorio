@@ -15,6 +15,10 @@ class Persona(ABC):
     @property
     def apellido(self):
         return self.__apellido
+    
+    @property
+    def cedula(self):
+        return self.__cedula
 
     @property
     def fecha_nacimiento (self):
