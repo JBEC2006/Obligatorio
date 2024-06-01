@@ -1,6 +1,6 @@
 from entities.policlinica import Policlinica
-from entities.socio import Socio
 from exceptions.error_tipeo import ErrorTipeo
+from datetime import datetime
 
 
 
@@ -27,7 +27,45 @@ def dar_alta_especialidad():
                 print ("El precio de la especialidad es incorrecto, ingréselo nuevamente")
 
 def alta_socio():
-     pass
+    repetir1 = True
+    repetir2 = True
+    repetir3 = True
+    repetir4 = True
+    repetir5 = True
+    repetir6 = True
+    while repetir1:
+          try:
+               nombre_socio = input("Ingrese el nombre :")
+               if not all(c.isalpha() or c.isspace() for c in nombre_socio) or nombre_socio == "":       
+                    raise ErrorTipeo("El nombre del socio es incorrecto, ingréselo nuevamente")
+               else: break
+          except ErrorTipeo as e:
+               print (e)
+    while repetir2:
+         try:
+              apellido_socio = input("Ingrese el apellido :")
+              if not all(c.isalpha() or c.isspace() for c in apellido_socio) or apellido_socio == "":       
+                    raise ErrorTipeo("El apellido del socio es incorrecto, ingréselo nuevamente")
+              else: break
+         except ErrorTipeo as e:
+               print (e)
+    while repetir3:
+         try:
+              cedula = int(input("Ingrese la cédula de identidad :"))                               
+              repetir3 = False
+         except ValueError as e:
+                print ("La cédula de identidad es incorrecta, ingrésela nuevamente")
+    while repetir4:
+         try:
+              fecha_nacimiento = input("Ingrese la fecha de nacimiento en formato aaaa-mm-dd :")
+              fecha = datetime.strptime(fecha_nacimiento, "%Y-%m-%d")
+         except ValueError as e:
+              print ("La fecha de nacimiento es incorrecta, ingrésela nuevamente")
+             
+
+              
+    
+               
 
            
 def menu():
