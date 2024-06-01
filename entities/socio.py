@@ -1,4 +1,4 @@
-from persona import Persona
+from entities.persona import Persona
 class Socio(Persona):
     def __init__(self, nombre, apellido, cedula, fecha_nacimiento, fecha_ingreso, numero_celular, tipo, deuda):
         super().__init__(nombre, apellido, cedula, fecha_nacimiento, fecha_ingreso, numero_celular)

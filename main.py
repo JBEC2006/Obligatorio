@@ -1,4 +1,5 @@
 from entities.policlinica import Policlinica
+from entities.socio import Socio
 from exceptions.error_tipeo import ErrorTipeo
 
 
@@ -24,6 +25,10 @@ def dar_alta_especialidad():
                 policlinica.dar_alta_especialidad_mini(nombre_especialidad, precio)
             except ValueError as e:
                 print ("El precio de la especialidad es incorrecto, ingréselo nuevamente")
+
+def alta_socio():
+     pass
+
            
 def menu():
     repetir=True
@@ -42,12 +47,8 @@ def menu():
             print("------------------")
         if pregunta_inicial == 1:
             dar_alta_especialidad()
-
-        
-
-
         if pregunta_inicial == 2:
-            pass
+            alta_socio()
         if pregunta_inicial == 3:
             pass
         if pregunta_inicial == 4:
