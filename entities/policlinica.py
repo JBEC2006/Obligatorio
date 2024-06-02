@@ -25,6 +25,6 @@ class Policlinica:
         especialidad = Especialidad(nombre_especialidad, precio)        #crea un objeto esp parea agregarlo a la lista
         self.__lista_de_especialidades.append(especialidad)
         
-    def alta_socio_mini(self, nombre_socio, apellido, cedula, fecha_nacimiento, fecha_ingreso, celular):
-        socio = Socio(nombre_socio, apellido, cedula, fecha_nacimiento, fecha_ingreso, celular)
+    def dar_alta_socio_mini(self, nombre_socio, apellido, cedula, fecha_nacimiento, fecha_ingreso, tipo, celular):
+        socio = Socio(nombre_socio, apellido, cedula, fecha_nacimiento, fecha_ingreso, tipo, celular)
         self.__lista_de_socios.append(socio)
