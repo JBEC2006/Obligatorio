@@ -1,5 +1,6 @@
 from entities.especialidad import Especialidad
 from entities.socio import Socio
+from entities.medico import Medico
 
 class Policlinica:
     def __init__(self):
@@ -28,3 +29,8 @@ class Policlinica:
     def dar_alta_socio_mini(self, nombre_socio, apellido, cedula, fecha_nacimiento, fecha_ingreso, tipo, celular):
         socio = Socio(nombre_socio, apellido, cedula, fecha_nacimiento, fecha_ingreso, tipo, celular)
         self.__lista_de_socios.append(socio)
+
+    def dar_alta_medico_mini(self, nombre, apellido, cedula, fecha_nacimiento, fecha_ingreso, numero_celular, especialidad):
+        medico = Medico(nombre, apellido, cedula, fecha_nacimiento, fecha_ingreso, numero_celular, especialidad)
+        self.__lista_de_medicos.append(medico)
+       

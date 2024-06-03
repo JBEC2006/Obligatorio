@@ -86,12 +86,95 @@ def dar_alta_socio():
          try:
               tipo = int(input("Ingrese el tipo de socio: 1- Bonificado 2- No bonificado:"))
               if tipo!=1 and tipo!=2:
-                   raise ErrorTipeo("El valor ingresado no es correcto, elige la opción 1 o 2.")
+                   raise ValueError ("El valor ingresado no es correcto, elija la opción 1 o 2.") 
+              else:break
+         except ValueError as e:
+              print ("El valor ingresado no es correcto, elija la opción 1 o 2.")
+    policlinica.dar_alta_socio_mini(nombre_socio, apellido_socio, cedula, fecha_nacimiento_formato, fecha_de_ingreso_formato, tipo, celular_socio)
+    print ("Se registró el socio con éxito")
+
+def dar_alta_medico():
+    repetir1 = True
+    repetir2 = True
+    repetir3 = True
+    repetir4 = True
+    repetir5 = True
+    repetir6 = True
+    repetir7 = True
+    while repetir1:
+          try:
+               nombre_medico = input("Ingrese el nombre :")
+               if not all(c.isalpha() or c.isspace() for c in nombre_medico) or nombre_medico == "":       
+                    raise ErrorTipeo("No es un nombre válido, ingréselo de nuevo")
+               else: break
+          except ErrorTipeo as e:
+               print (e)
+    while repetir2:
+         try:
+              apellido_medico = input("Ingrese el apellido :")
+              if not all(c.isalpha() or c.isspace() for c in apellido_medico) or apellido_medico == "":       
+                    raise ErrorTipeo("No es un apellido válido, ingréselo de nuevo")
+              else: break
+         except ErrorTipeo as e:
+               print (e)
+    while repetir3:
+         try:
+              cedula = int(input("Ingrese la cédula de identidad sin puntos ni guiones:")) 
+              if cedula>99999999 or cedula<10000000:
+                   raise ErrorTipeo("No es una cédula válida, ingrese nuevamente una cédula de 8 dígitos.")                              
+              else: break
+         except ErrorTipeo as e:
+                print (e)
+    while repetir4:
+         try:
+              fecha_nacimiento = input("Ingrese la fecha de nacimiento en formato aaaa-mm-dd :")
+              fecha_nacimiento_formato = datetime.strptime(fecha_nacimiento, "%Y-%m-%d")
+              break
+         except ValueError as e:
+              print ("No es una fecha válida, vuelva a ingresarla en el formato aaaa-mm-dd.")
+    while repetir5:
+         try:
+              fecha_de_ingreso = input("Ingrese la fecha de ingreso a la institución en formato aaaa-mm-dd:")
+              fecha_de_ingreso_formato = datetime.strptime(fecha_de_ingreso, "%Y-%m-%d")
+              break
+         except ValueError as e:
+              print ("No es una fecha válida, vuelva a ingresarla en el formato aaaa-mm-dd.")
+    while repetir6:
+         try:
+              celular_medico = int(input("Ingrese el número de celular:"))
+              celular_sin_primer_digito = int(str(celular_medico)[0:]) #Se le saca el digito de la posicion 0
+              if celular_sin_primer_digito>99999999 or celular_sin_primer_digito<10000000:
+              #La letra no especifica que los dos primeros digitos deberan ser "09"
+                   raise ErrorTipeo("No es un número de celular válido, ingrese un número con el formato 09XXXXXXX")
               else:break
          except ErrorTipeo as e:
               print (e)
-    policlinica.dar_alta_socio_mini(nombre_socio, apellido_socio, cedula, fecha_nacimiento_formato, fecha_de_ingreso_formato, tipo, celular_socio)
-    print ("Se registro el socio con éxito")
+    while repetir7:
+         try:
+              especialidad = input("Ingrese la especialidad :")
+              if not all(c.isalpha() or c.isspace() for c in especialidad) or especialidad == "":
+                    raise ErrorTipeo("El nombre de la especialidad es incorrecto, ingréselo nuevamente")
+              else:
+                  for especialidad_buscar in policlinica.lista_de_especialidades: #hay que revisar que funque
+                     if especialidad_buscar == especialidad:
+                        especialidad=especialidad_buscar
+                        policlinica.dar_alta_medico_mini(nombre_medico, apellido_medico, cedula, fecha_nacimiento, fecha_de_ingreso, celular_medico, especialidad)
+                        print ("El médico se dio de alta con éxito")
+                     else:
+                        print("Esta especialidad no está dada de alta")
+                        print ("1 - Volver a ingresar la especialidad")
+                        print ("2 - Dar de alta esta especialidad")
+                        opcion=int(input("Elija una opción: "))
+                        if opcion == 1:
+                            pass                                                        
+                        elif opcion == 2:
+                             dar_alta_especialidad()
+                             break
+                                                
+         except ErrorTipeo as e:
+                            print (e)
+              
+     
               
     
                
@@ -117,7 +200,7 @@ def menu():
         if pregunta_inicial == 2:
             dar_alta_socio()
         if pregunta_inicial == 3:
-            pass
+            dar_alta_medico()
         if pregunta_inicial == 4:
             pass
         if pregunta_inicial == 5:
