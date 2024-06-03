@@ -155,21 +155,25 @@ def dar_alta_medico():
               if not all(c.isalpha() or c.isspace() for c in especialidad) or especialidad == "":
                     raise ErrorTipeo("El nombre de la especialidad es incorrecto, ingréselo nuevamente")
               else:
-                  for especialidad_buscar in policlinica.lista_de_especialidades: #hay que revisar que funque
-                     if especialidad_buscar == especialidad:
-                        especialidad=especialidad_buscar
+                encontrado = False
+                for especialidad_buscar in policlinica.lista_de_especialidades: #hay que revisar que funque
+                    print(especialidad_buscar.nombre_especialidad)
+                    if especialidad_buscar.nombre_especialidad == especialidad:  #para comparar el nombre de cada uno, y no un objeto con el nombre
+                        encontrado = True
                         policlinica.dar_alta_medico_mini(nombre_medico, apellido_medico, cedula, fecha_nacimiento, fecha_de_ingreso, celular_medico, especialidad)
                         print ("El médico se dio de alta con éxito")
-                     else:
-                        print("Esta especialidad no está dada de alta")
-                        print ("1 - Volver a ingresar la especialidad")
-                        print ("2 - Dar de alta esta especialidad")
-                        opcion=int(input("Elija una opción: "))
-                        if opcion == 1:
-                            pass                                                        
-                        elif opcion == 2:
-                             dar_alta_especialidad()
-                             break
+                        repetir7 = False
+                        break
+                    
+                if not encontrado:
+                    print("Esta especialidad no está dada de alta")
+                    print ("1 - Volver a ingresar la especialidad")
+                    print ("2 - Dar de alta esta especialidad")
+                    opcion=int(input("Elija una opción: "))
+                    if opcion == 1:
+                        pass                                                        
+                    elif opcion == 2:
+                        dar_alta_especialidad()
                                                 
          except ErrorTipeo as e:
                             print (e)
