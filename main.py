@@ -221,7 +221,7 @@ def dar_alta_consulta():
          except ErrorTipeo as e:
                print (e)
          except ValueError as e:
-              print("El valor ingresado no es correcto, vyelva a ingresar la especialidad.")
+              print("El valor ingresado no es correcto, vuelva a ingresar la especialidad.")
 
      while repetir2:
           try:
@@ -229,26 +229,28 @@ def dar_alta_consulta():
                if not all(c.isalpha() or c.isspace() for c in nombre_medico) or nombre_medico == "":
                          raise ErrorTipeo("El nombre del medico es incorrecto, ingréselo nuevamente")
                else:
-                 encontrado = False
-               for nombre_medico_buscar in policlinica.lista_de_medicos: 
-                    if nombre_medico_buscar.lista_de_medicos == especialidad:  #para comparar el nombre de cada uno, y no un objeto con el nombre
-                        encontrado = True
-                        repetir2 = False
-                        break
+                    encontrado = False
+                    for medico_a_buscar in policlinica.lista_de_medicos: 
+                         if medico_a_buscar.nombre == nombre_medico:  #para comparar el nombre de cada uno, y no un objeto con el nombre
+                              encontrado = True                       #se pone.nombre para que sepa que tiene que comparar eso de la lista
+                              repetir2 = False
+                              break
 
                     if not encontrado:
                          print("Este medico no está dado de alta")
                          print ("1 - Volver a ingresar el nombre del medico")
                          print ("2 - Dar de alta el medico")
                          opcion=int(input("Elija una opción: "))
-                    if opcion == 1:
-                        pass                                                        
-                    elif opcion == 2:
-                        dar_alta_medico()
-                    else:
-                         raise ValueError ("El valor ingresado no es correcto, vuelva a ingresar el medico")
+                         if opcion == 1:
+                              pass                                                        
+                         elif opcion == 2:
+                              dar_alta_medico()
+                         else:
+                              raise ValueError ("El valor ingresado no es correcto, vuelva a ingresar el medico")
           except ErrorTipeo as e:
                print(e)
+          except ValueError as e:
+              print("El valor ingresado no es correcto, vuelva a ingresar el medico.")
      
      while repetir3:
           try:
@@ -257,13 +259,19 @@ def dar_alta_consulta():
               break
           except ValueError as e:
               print ("No es una fecha válida, vuelva a ingresarla en el formato aaaa-mm-dd.")
+              
      while repetir4:
           try:
                cantidad_pacientes = int(input("Ingrese la cantidad de pacientes que se atenderán :"))
                policlinica.dar_alta_consulta_mini(especialidad, nombre_medico, fecha_consulta, cantidad_pacientes)
+               repetir4 = False
           except ValueError as e:
-               print ("La cantidad de los pacientes no es válida, ingrese un número")          
+               print ("La cantidad de los pacientes no es válida, ingrese un número.")          
               
+def emitir_ticket():
+
+def realizar_consulta():
+     pass
      
               
     
@@ -294,9 +302,9 @@ def menu():
         if pregunta_inicial == 4:
             dar_alta_consulta()
         if pregunta_inicial == 5:
-            pass
+            emitir_ticket()
         if pregunta_inicial == 6:
-            pass
+            realizar_consulta()
         if pregunta_inicial == 7:
             repetir=False
             print("Fin")
