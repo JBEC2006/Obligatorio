@@ -125,6 +125,8 @@ def dar_alta_medico():
               else: break
          except ErrorTipeo as e:
                 print (e)
+         except ValueError as e:
+              print("No es una cédula válida, ingrese nuevamente una cédula de 8 dígitos.")
     while repetir4:
          try:
               fecha_nacimiento = input("Ingrese la fecha de nacimiento en formato aaaa-mm-dd :")
@@ -149,6 +151,8 @@ def dar_alta_medico():
               else:break
          except ErrorTipeo as e:
               print (e)
+         except ValueError as e:
+              print ("No es un número de celular válido, ingrese un número con el formato 09XXXXXXX")
     while repetir7:
          try:
               especialidad = input("Ingrese la especialidad :")
@@ -156,8 +160,7 @@ def dar_alta_medico():
                     raise ErrorTipeo("El nombre de la especialidad es incorrecto, ingréselo nuevamente")
               else:
                 encontrado = False
-                for especialidad_buscar in policlinica.lista_de_especialidades: #hay que revisar que funque
-                    print(especialidad_buscar.nombre_especialidad)
+                for especialidad_buscar in policlinica.lista_de_especialidades:
                     if especialidad_buscar.nombre_especialidad == especialidad:  #para comparar el nombre de cada uno, y no un objeto con el nombre
                         encontrado = True
                         policlinica.dar_alta_medico_mini(nombre_medico, apellido_medico, cedula, fecha_nacimiento, fecha_de_ingreso, celular_medico, especialidad)
@@ -174,9 +177,92 @@ def dar_alta_medico():
                         pass                                                        
                     elif opcion == 2:
                         dar_alta_especialidad()
+                    else:
+                         raise ValueError ("El valor ingresado no es correcto, vuelva a ingresar la especialidad")
                                                 
          except ErrorTipeo as e:
                             print (e)
+         except ValueError as e:
+              print("El valor ingresado no es correcto, vyelva a ingresar la especialidad.")
+
+
+def dar_alta_consulta():
+     repetir1 = True
+     repetir2 = True
+     repetir3 = True
+     repetir4 = True
+              
+
+     while repetir1:
+         try:
+              especialidad = input("Ingrese la especialidad :")
+              if not all(c.isalpha() or c.isspace() for c in especialidad) or especialidad == "":
+                    raise ErrorTipeo("El nombre de la especialidad es incorrecto, ingréselo nuevamente")
+              else:
+                encontrado = False
+                for especialidad_buscar in policlinica.lista_de_especialidades: 
+                    if especialidad_buscar.nombre_especialidad == especialidad:  #para comparar el nombre de cada uno, y no un objeto con el nombre
+                        encontrado = True
+                        repetir1 = False
+                        break
+                    
+                if not encontrado:
+                    print("Esta especialidad no está dada de alta")
+                    print ("1 - Volver a ingresar la especialidad")
+                    print ("2 - Dar de alta esta especialidad")
+                    opcion=int(input("Elija una opción: "))
+                    if opcion == 1:
+                        pass                                                        
+                    elif opcion == 2:
+                        dar_alta_especialidad()
+                    else:
+                         raise ValueError ("El valor ingresado no es correcto, vuelva a ingresar la especialidad")
+                                                
+         except ErrorTipeo as e:
+               print (e)
+         except ValueError as e:
+              print("El valor ingresado no es correcto, vyelva a ingresar la especialidad.")
+
+     while repetir2:
+          try:
+               nombre_medico = input("Ingrese el nombre del médico :")
+               if not all(c.isalpha() or c.isspace() for c in nombre_medico) or nombre_medico == "":
+                         raise ErrorTipeo("El nombre del medico es incorrecto, ingréselo nuevamente")
+               else:
+                 encontrado = False
+               for nombre_medico_buscar in policlinica.lista_de_medicos: 
+                    if nombre_medico_buscar.lista_de_medicos == especialidad:  #para comparar el nombre de cada uno, y no un objeto con el nombre
+                        encontrado = True
+                        repetir2 = False
+                        break
+
+                    if not encontrado:
+                         print("Este medico no está dado de alta")
+                         print ("1 - Volver a ingresar el nombre del medico")
+                         print ("2 - Dar de alta el medico")
+                         opcion=int(input("Elija una opción: "))
+                    if opcion == 1:
+                        pass                                                        
+                    elif opcion == 2:
+                        dar_alta_medico()
+                    else:
+                         raise ValueError ("El valor ingresado no es correcto, vuelva a ingresar el medico")
+          except ErrorTipeo as e:
+               print(e)
+     
+     while repetir3:
+          try:
+              fecha_consulta = input("Ingrese la fecha de la consulta en en formato aaaa-mm-dd:")
+              fecha_consulta_formato = datetime.strptime(fecha_consulta, "%Y-%m-%d")
+              break
+          except ValueError as e:
+              print ("No es una fecha válida, vuelva a ingresarla en el formato aaaa-mm-dd.")
+     while repetir4:
+          try:
+               cantidad_pacientes = int(input("Ingrese la cantidad de pacientes que se atenderán :"))
+               policlinica.dar_alta_consulta_mini(especialidad, nombre_medico, fecha_consulta, cantidad_pacientes)
+          except ValueError as e:
+               print ("La cantidad de los pacientes no es válida, ingrese un número")          
               
      
               
@@ -206,7 +292,7 @@ def menu():
         if pregunta_inicial == 3:
             dar_alta_medico()
         if pregunta_inicial == 4:
-            pass
+            dar_alta_consulta()
         if pregunta_inicial == 5:
             pass
         if pregunta_inicial == 6:

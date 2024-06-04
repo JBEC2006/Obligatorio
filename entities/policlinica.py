@@ -1,12 +1,14 @@
 from entities.especialidad import Especialidad
 from entities.socio import Socio
 from entities.medico import Medico
+from entities.consulta import Consulta
 
 class Policlinica:
     def __init__(self):
         self.__lista_de_medicos = []
         self.__lista_de_socios = []
         self.__lista_de_especialidades = []
+        self.__lista_de_consultas = []
 
     @property
     def lista_de_especialidades(self):
@@ -19,6 +21,10 @@ class Policlinica:
     @property
     def lista_de_medicos(self):
         return self.__lista_de_medicos
+    
+    @property
+    def lista_de_consultas(self):
+        return self.__lista_de_consultas
     
     
     
@@ -33,4 +39,7 @@ class Policlinica:
     def dar_alta_medico_mini(self, nombre, apellido, cedula, fecha_nacimiento, fecha_ingreso, numero_celular, especialidad):
         medico = Medico(nombre, apellido, cedula, fecha_nacimiento, fecha_ingreso, numero_celular, especialidad)
         self.__lista_de_medicos.append(medico)
-       
+    
+    def dar_alta_consulta_mini(self, especialidad, nombre_medico, fecha_consulta, cantidad_pacientes):
+        consulta = Consulta(especialidad, nombre_medico, fecha_consulta, cantidad_pacientes)
+        self.__lista_de_consultas.append(consulta)
