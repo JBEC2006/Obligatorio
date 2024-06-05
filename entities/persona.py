@@ -1,4 +1,5 @@
 from abc import ABC
+from datetime import datetime
 class Persona(ABC):
     def __init__(self, nombre, apellido, cedula, fecha_nacimiento, fecha_ingreso, numero_celular ):
         self.__nombre = nombre
@@ -34,11 +35,35 @@ class Persona(ABC):
     
     @nombre.setter
     def nombre(self, nuevo_nombre):
-        if nuevo_nombre!="" and type(nuevo_nombre)!=int and type(nuevo_nombre)!=float:  #que el nombre no sea vacio ni numerico
+        if nuevo_nombre.isalpha()==True: #Si es un string que solo contiene elementos alfabeticos (sin espacios) return True
             return nuevo_nombre
+
+    @apellido.setter
+    def apellido(self, nuevo_apellido):
+        if nuevo_apellido.isalpha()==True:
+            return nuevo_apellido
         
-    def cambiar_nombre(self, nuevo_nombre):
-        self.__nombre=nuevo_nombre  
-        return nuevo_nombre
+    @cedula.setter
+    def cedula(self, nueva_cedula):
+        if isinstance(nueva_cedula, int)==True and 10000000 <= nueva_cedula <= 99999999:
+            return nueva_cedula
+        
+    @fecha_nacimiento.setter
+    def fecha_nacimiento(self, nueva_fecha_nacimiento):
+        if isinstance(nueva_fecha_nacimiento, (datetime)): 
+            return nueva_fecha_nacimiento
+        
+    @fecha_ingreso.setter
+    def fecha_nacimiento(self, nueva_fecha_ingreso):
+        if isinstance(nueva_fecha_ingreso, (datetime)):
+            return nueva_fecha_ingreso
+        
+    @numero_celular.setter
+    def fecha_nacimiento(self, nuevo_numero_celular):
+        if isinstance(nuevo_numero_celular, int)==True and 100000000 <= nuevo_numero_celular <= 999999999:
+            return nuevo_numero_celular        
+        
+    
+    
 
         

@@ -269,6 +269,7 @@ def dar_alta_consulta():
                print ("La cantidad de los pacientes no es válida, ingrese un número.")          
               
 def emitir_ticket():
+     pass
 
 def realizar_consulta():
      pass

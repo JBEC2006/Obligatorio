@@ -1,3 +1,5 @@
+import datetime
+
 class Consulta():
     def __init__ (self, especialidad, nombre_medico, fecha_consulta ,cantidad_pacientes):
         self.__especialidad = especialidad
@@ -21,5 +23,23 @@ class Consulta():
     @property 
     def fecha_consulta(self):
         return self.__fecha_consulta
+    
+    @especialidad.setter
+    def especialidad(self, nueva_especialidad):
+        if all(c.isalpha() or c.isspace() for c in nueva_especialidad):
+            return nueva_especialidad
+
+    @nombre_medico.setter
+    def nombre_medico(self, nuevo_nombre_medico):
+        if all(c.isalpha() or c.isspace() for c in nuevo_nombre_medico):
+            return nuevo_nombre_medico
         
+    @fecha_consulta.setter
+    def fecha_consulta(self, nueva_fecha_consulta):
+        if isinstance(nueva_fecha_consulta, (datetime)): 
+            return nueva_fecha_consulta
         
+    @cantidad_pacientes.setter
+    def cantidad_pacientes(self, nueva_cantidad_de_pacientes):
+        if isinstance(nueva_cantidad_de_pacientes, int)==True and nueva_cantidad_de_pacientes>=0:
+            return nueva_cantidad_de_pacientes
