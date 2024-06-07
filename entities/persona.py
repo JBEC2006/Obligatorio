@@ -36,32 +36,32 @@ class Persona(ABC):
     @nombre.setter
     def nombre(self, nuevo_nombre):
         if nuevo_nombre.isalpha()==True: #Si es un string que solo contiene elementos alfabeticos (sin espacios) return True
-            return nuevo_nombre
+            self.__nombre = nuevo_nombre
 
     @apellido.setter
     def apellido(self, nuevo_apellido):
         if nuevo_apellido.isalpha()==True:
-            return nuevo_apellido
+            self.__apellido = nuevo_apellido
         
     @cedula.setter
     def cedula(self, nueva_cedula):
         if isinstance(nueva_cedula, int)==True and 10000000 <= nueva_cedula <= 99999999:
-            return nueva_cedula
+            self.__cedula = nueva_cedula
         
     @fecha_nacimiento.setter
     def fecha_nacimiento(self, nueva_fecha_nacimiento):
         if isinstance(nueva_fecha_nacimiento, (datetime)): 
-            return nueva_fecha_nacimiento
+            self.__fecha_nacimiento = nueva_fecha_nacimiento
         
     @fecha_ingreso.setter
-    def fecha_nacimiento(self, nueva_fecha_ingreso):
+    def fecha_ingreso(self, nueva_fecha_ingreso):
         if isinstance(nueva_fecha_ingreso, (datetime)):
-            return nueva_fecha_ingreso
+            self.__fecha_ingreso = nueva_fecha_ingreso
         
     @numero_celular.setter
-    def fecha_nacimiento(self, nuevo_numero_celular):
+    def fecha_celular(self, nuevo_numero_celular):
         if isinstance(nuevo_numero_celular, int)==True and 100000000 <= nuevo_numero_celular <= 999999999:
-            return nuevo_numero_celular        
+            self.__numero_celular = nuevo_numero_celular        
         
     
     

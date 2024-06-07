@@ -16,9 +16,9 @@ class Socio(Persona):
     @tipo.setter
     def tipo(self, nuevo_tipo):
         if isinstance(nuevo_tipo, int)==True and (nuevo_tipo==1 or nuevo_tipo==2):
-            return nuevo_tipo
+            self.__tipo = nuevo_tipo
     
     @deuda.setter
     def deuda(self, nueva_deuda):
         if isinstance(nueva_deuda, int)==True and nueva_deuda>=0:
-            return nueva_deuda
+            self.__deuda = nueva_deuda

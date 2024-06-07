@@ -26,6 +26,30 @@ class Policlinica:
     def lista_de_consultas(self):
         return self.__lista_de_consultas
     
+    @lista_de_especialidades.setter
+    def lista_de_especialidades(self, nueva_lista):
+        if nueva_lista!=[]:
+            self.__lista_de_especialidades = nueva_lista
+
+    @lista_de_socios.setter
+    def lista_de_socios(self, nueva_lista):
+        if nueva_lista!=[]:
+            self.__lista_de_socios = nueva_lista
+
+    @lista_de_medicos.setter
+    def lista_de_medicos(self, nueva_lista):
+        if nueva_lista!=[]:
+            self.__lista_de_medicos = nueva_lista
+
+    @lista_de_consultas.setter
+    def lista_de_consultas(self, nueva_lista):
+        if nueva_lista!=[]:
+            self.__lista_de_consultas = nueva_lista
+    
+    
+
+
+    
     
     
     def dar_alta_especialidad_mini(self, nombre_especialidad, precio):
