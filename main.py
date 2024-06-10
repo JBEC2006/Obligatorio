@@ -335,9 +335,10 @@ def emitir_ticket():
 
 
 
-
+          except ValueError as e:
+               print (e)
           except ErrorTipeo as e:
-               print(e)
+               print (e)
 
 
 
