@@ -15,7 +15,6 @@ class Consulta():
     def nombre_medico(self):
         return self.__nombre_medico
 
-
     @property 
     def cantidad_pacientes(self):
         return self.__cantidad_pacientes
@@ -33,7 +32,7 @@ class Consulta():
     def nombre_medico(self, nuevo_nombre_medico):
         if all(c.isalpha() or c.isspace() for c in nuevo_nombre_medico):
             self.__nombre_medico = nuevo_nombre_medico
-        
+
     @fecha_consulta.setter
     def fecha_consulta(self, nueva_fecha_consulta):
         if isinstance(nueva_fecha_consulta, (datetime)): 

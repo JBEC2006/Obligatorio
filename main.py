@@ -1,5 +1,6 @@
 from entities.policlinica import Policlinica
 from exceptions.error_tipeo import ErrorTipeo
+from exceptions.entidad_ya_existe import EntidadYaExiste
 from datetime import datetime
 
 
@@ -12,10 +13,15 @@ def dar_alta_especialidad():
                 nombre_especialidad = input("Ingrese el nombre de la especialidad :")
                 if not all(c.isalpha() or c.isspace() for c in nombre_especialidad) or nombre_especialidad == "":       #si no hay escrito texto, con o sin espacio
                     raise ErrorTipeo("El nombre de la especialidad es incorrecto, ingréselo nuevamente")
-                else: break
-                    
+                else:
+                     for especialidad_buscar in policlinica.lista_de_especialidades:
+                          if especialidad_buscar.nombre_especialidad == nombre_especialidad:
+                               raise EntidadYaExiste ("Esta especialidad ya está ingresada") #EntidadYaExiste
+                     break     
             except ErrorTipeo as e:
-                            print (e)
+                 print (e)
+            except EntidadYaExiste as e:
+                 print (e)
 
         while repetir2:
             try:                                                                              
@@ -118,15 +124,21 @@ def dar_alta_medico():
          except ErrorTipeo as e:
                print (e)
     while repetir3:
-         try:
+          try:
               cedula = int(input("Ingrese la cédula de identidad sin puntos ni guiones:")) 
               if cedula>99999999 or cedula<10000000:
                    raise ErrorTipeo("No es una cédula válida, ingrese nuevamente una cédula de 8 dígitos.")                              
-              else: break
-         except ErrorTipeo as e:
-                print (e)
-         except ValueError as e:
-              print("No es una cédula válida, ingrese nuevamente una cédula de 8 dígitos.")
+              else: 
+                    for buscar_medico in policlinica.lista_de_medicos:
+                        if buscar_medico.cedula == cedula:
+                             raise EntidadYaExiste ("Este médico ya está ingresado")
+                    break
+          except EntidadYaExiste as e:
+               print (e)
+          except ErrorTipeo as e:
+               print (e)
+          except ValueError as e:
+               print("No es una cédula válida, ingrese nuevamente una cédula de 8 dígitos.")
     while repetir4:
          try:
               fecha_nacimiento = input("Ingrese la fecha de nacimiento en formato aaaa-mm-dd :")
@@ -205,16 +217,15 @@ def dar_alta_consulta():
                         encontrado = True
                         repetir1 = False
                         break
-                    
                 if not encontrado:
                     print("Esta especialidad no está dada de alta")
                     print ("1 - Volver a ingresar la especialidad")
                     print ("2 - Dar de alta esta especialidad")
                     opcion=int(input("Elija una opción: "))
                     if opcion == 1:
-                        pass                                                        
+                         pass                                                       
                     elif opcion == 2:
-                        dar_alta_especialidad()
+                         dar_alta_especialidad()
                     else:
                          raise ValueError ("El valor ingresado no es correcto, vuelva a ingresar la especialidad")
                                                 
@@ -231,22 +242,21 @@ def dar_alta_consulta():
                else:
                     encontrado = False
                     for medico_a_buscar in policlinica.lista_de_medicos: 
-                         if medico_a_buscar.nombre == nombre_medico:  #para comparar el nombre de cada uno, y no un objeto con el nombre
+                         if medico_a_buscar.nombre +" "+ medico_a_buscar.apellido == nombre_medico:  #para comparar el nombre de cada uno, y no un objeto con el nombre
                               encontrado = True                       #se pone.nombre para que sepa que tiene que comparar eso de la lista
                               repetir2 = False
-                              break
-
+                              break                    
                     if not encontrado:
                          print("Este medico no está dado de alta")
                          print ("1 - Volver a ingresar el nombre del medico")
                          print ("2 - Dar de alta el medico")
                          opcion=int(input("Elija una opción: "))
                          if opcion == 1:
-                              pass                                                        
+                              break                                                        
                          elif opcion == 2:
                               dar_alta_medico()
                          else:
-                              raise ValueError ("El valor ingresado no es correcto, vuelva a ingresar el medico")
+                              raise ValueError ("El valor ingresado no es correcto, vuelva a elegir una opción.")
           except ErrorTipeo as e:
                print(e)
           except ValueError as e:
@@ -263,13 +273,73 @@ def dar_alta_consulta():
      while repetir4:
           try:
                cantidad_pacientes = int(input("Ingrese la cantidad de pacientes que se atenderán :"))
-               policlinica.dar_alta_consulta_mini(especialidad, nombre_medico, fecha_consulta, cantidad_pacientes)
+               turno = []
+               for i in range (cantidad_pacientes):
+                    turno.append(i+1)
+               policlinica.dar_alta_consulta_mini(especialidad, nombre_medico, fecha_consulta, turno)
                repetir4 = False
           except ValueError as e:
                print ("La cantidad de los pacientes no es válida, ingrese un número.")          
               
 def emitir_ticket():
-     pass
+     repetir1 = True
+     repetir2 = True
+     repetir3 = True
+     repetir4 = True
+
+     while repetir1:
+          try: 
+               encontrado = []          #guarda la posicion de las consultas en la lista real"
+               tuco_numero = 0
+               tuco = False
+               lista_consultas_especialidad = []
+               especialidad = input("Ingrese la especialidad :")
+               if not all(c.isalpha() or c.isspace() for c in especialidad) or especialidad== "":
+                              raise ErrorTipeo("La especialidad debe ser un string")
+               else:
+                    for especialidad_a_buscar in policlinica.lista_de_especialidades:
+                         if especialidad_a_buscar.nombre_especialidad == especialidad :
+                              for posicion,especialidad_variable in enumerate(policlinica.lista_de_consultas): #en posicion se guarda la posicion por el enumerate, y en esp_variable el objeto
+                                   if especialidad_variable.especialidad == especialidad:
+                                        tuco_numero += 1
+                                        lista_consultas_especialidad.append([f"{tuco_numero} - Doctor: {especialidad_variable.nombre_medico} {especialidad_variable.apellido_medico}", f"Día de la consulta: {especialidad_variable.fecha_consulta} "])                
+                                        encontrado.append(posicion)                    
+                                        tuco = True
+                              print(lista_consultas_especialidad)          
+                              repetir1 = False
+                    if tuco == False:
+                         print("Esta especialidad no está dada de alta")
+                         print ("1 - Volver a ingresar la especialidad")
+                         print ("2 - Dar de alta la especialidad")
+                         opcion=int(input("Elija una opción: "))
+                         if opcion == 1:
+                              pass                                                        
+                         elif opcion == 2:
+                              dar_alta_especialidad()
+                         else:
+                              raise ValueError ("El valor ingresado no es correcto, vuelva a ingresar la especialidad.")
+          except ValueError as e:
+               print (e)
+          except ErrorTipeo as e:
+               print (e)
+     
+          
+     while repetir2:
+          try: 
+               opcion = int(input("Seleccione la opción deseada: "))
+               if  0<opcion<=tuco_numero:
+                    consulta = (policlinica.lista_de_consultas[encontrado[posicion-1]]) #accedo a la posicion-1 de encontrado, que tambien es un numero y se refiere a la consulta que me sirve
+                    print(consulta.cantidad_pacientes)
+               else:
+                    raise ValueError ("Esa opción no es válida, ingrésela de nuevo.")
+
+
+
+
+          except ErrorTipeo as e:
+               print(e)
+
+
 
 def realizar_consulta():
      pass

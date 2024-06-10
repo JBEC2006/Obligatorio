@@ -1,0 +1,2 @@
+class EntidadYaExiste (Exception):
+    pass
