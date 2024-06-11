@@ -176,26 +176,31 @@ def dar_alta_medico():
                     if especialidad_buscar.nombre_especialidad == especialidad:  #para comparar el nombre de cada uno, y no un objeto con el nombre
                         encontrado = True
                         policlinica.dar_alta_medico_mini(nombre_medico, apellido_medico, cedula, fecha_nacimiento, fecha_de_ingreso, celular_medico, especialidad)
-                        print ("El médico se dio de alta con éxito")
+                        print ("El médico se dio de alta con éxito.")
                         repetir7 = False
                         break
                     
                 if not encontrado:
-                    print("Esta especialidad no está dada de alta")
-                    print ("1 - Volver a ingresar la especialidad")
-                    print ("2 - Dar de alta esta especialidad")
-                    opcion=int(input("Elija una opción: "))
-                    if opcion == 1:
-                        pass                                                        
-                    elif opcion == 2:
-                        dar_alta_especialidad()
-                    else:
-                         raise ValueError ("El valor ingresado no es correcto, vuelva a ingresar la especialidad")
-                                                
+                    repetir7_mini=True
+                    while repetir7_mini:
+                         try:
+                              print("Esta especialidad no está dada de alta.")
+                              print ("1 - Volver a ingresar la especialidad")
+                              print ("2 - Dar de alta esta especialidad")
+                              opcion=int(input("Elija una opción: "))
+                              if opcion == 1:
+                                   repetir7_mini = False                                                        
+                              elif opcion == 2:
+                                   dar_alta_especialidad()
+                                   repetir7_mini = False
+                              else:
+                                   raise ValueError ("El valor ingresado no es correcto, ingrese 1 o 2")
+                         except ValueError as e:
+                              print (e)                       
          except ErrorTipeo as e:
                             print (e)
          except ValueError as e:
-              print("El valor ingresado no es correcto, vyelva a ingresar la especialidad.")
+              print(e)
 
 
 def dar_alta_consulta():
@@ -218,21 +223,27 @@ def dar_alta_consulta():
                         repetir1 = False
                         break
                 if not encontrado:
-                    print("Esta especialidad no está dada de alta")
-                    print ("1 - Volver a ingresar la especialidad")
-                    print ("2 - Dar de alta esta especialidad")
-                    opcion=int(input("Elija una opción: "))
-                    if opcion == 1:
-                         pass                                                       
-                    elif opcion == 2:
-                         dar_alta_especialidad()
-                    else:
-                         raise ValueError ("El valor ingresado no es correcto, vuelva a ingresar la especialidad")
+                    repetir1_mini = True
+                    while repetir1_mini:
+                         try:
+                              print("Esta especialidad no está dada de alta")
+                              print ("1 - Volver a ingresar la especialidad")
+                              print ("2 - Dar de alta esta especialidad")
+                              opcion=int(input("Elija una opción: "))
+                              if opcion == 1:
+                                   repetir1_mini = False                                                       
+                              elif opcion == 2:
+                                   dar_alta_especialidad()
+                                   repetir1_mini = False
+                              else:
+                                   raise ValueError ("El valor ingresado no es correcto, ingrese 1 o 2.")
+                         except ValueError as e:
+                              print (e)
                                                 
          except ErrorTipeo as e:
                print (e)
          except ValueError as e:
-              print("El valor ingresado no es correcto, vuelva a ingresar la especialidad.")
+              print(e)
 
      while repetir2:
           try:
@@ -247,20 +258,26 @@ def dar_alta_consulta():
                               repetir2 = False
                               break                    
                     if not encontrado:
-                         print("Este medico no está dado de alta")
-                         print ("1 - Volver a ingresar el nombre del medico")
-                         print ("2 - Dar de alta el medico")
-                         opcion=int(input("Elija una opción: "))
-                         if opcion == 1:
-                              break                                                        
-                         elif opcion == 2:
-                              dar_alta_medico()
-                         else:
-                              raise ValueError ("El valor ingresado no es correcto, vuelva a elegir una opción.")
+                         repetir2_mini = True
+                         while repetir2_mini:
+                              try:
+                                   print("Este medico no está dado de alta")
+                                   print ("1 - Volver a ingresar el nombre del medico")
+                                   print ("2 - Dar de alta el medico")
+                                   opcion=int(input("Elija una opción: "))
+                                   if opcion == 1:
+                                        repetir2_mini = False                                                        
+                                   elif opcion == 2:
+                                        dar_alta_medico()
+                                        repetir2_mini = False
+                                   else:
+                                        raise ValueError ("El valor ingresado no es correcto, vuelva a elegir una opción.")
+                              except ValueError as e:
+                                   print (e)
           except ErrorTipeo as e:
                print(e)
           except ValueError as e:
-              print("El valor ingresado no es correcto, vuelva a ingresar el medico.")
+              print(e)
      
      while repetir3:
           try:
@@ -308,16 +325,22 @@ def emitir_ticket():
                               print(lista_consultas_especialidad)          
                               repetir1 = False
                     if tuco == False:
-                         print("Esta especialidad no está dada de alta")
-                         print ("1 - Volver a ingresar la especialidad")
-                         print ("2 - Dar de alta la especialidad")
-                         opcion=int(input("Elija una opción: "))
-                         if opcion == 1:
-                              pass                                                        
-                         elif opcion == 2:
-                              dar_alta_especialidad()
-                         else:
-                              raise ValueError ("El valor ingresado no es correcto, vuelva a ingresar la especialidad.")
+                         repetir1_mini = True
+                         while repetir1_mini:
+                              try:
+                                   print("Esta especialidad no está dada de alta")
+                                   print ("1 - Volver a ingresar la especialidad")
+                                   print ("2 - Dar de alta la especialidad")
+                                   opcion=int(input("Elija una opción: "))
+                                   if opcion == 1:           
+                                        repetir1_mini=False                                             
+                                   elif opcion == 2:
+                                        dar_alta_especialidad()
+                                        repetir1_mini=False
+                                   else:
+                                        raise ValueError ("El valor ingresado no es correcto, ingrese 1 o 2.")
+                              except ValueError as e:
+                                   print (e)
           except ValueError as e:
                print (e)
           except ErrorTipeo as e:
