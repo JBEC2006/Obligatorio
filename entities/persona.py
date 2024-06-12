@@ -40,7 +40,7 @@ class Persona(ABC):
 
     @apellido.setter
     def apellido(self, nuevo_apellido):
-        if nuevo_apellido.isalpha()==True:
+        if all(c.isalpha() or c.isspace() for c in nuevo_apellido):
             self.__apellido = nuevo_apellido
         
     @cedula.setter

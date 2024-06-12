@@ -95,7 +95,7 @@ def dar_alta_socio():
               print (e)
     while repetir7:
          try:
-              tipo = int(input("Ingrese el tipo de socio: 1- Bonificado 2- No bonificado:"))
+              tipo = int(input("Ingrese el tipo de socio: 1- bonificado 2- no bonificado:"))
               if tipo!=1 and tipo!=2:
                    raise ValueError ("El valor ingresado no es correcto, elija la opción 1 o 2.") 
               else:break
@@ -303,6 +303,7 @@ def emitir_ticket():
      repetir1 = True
      repetir2 = True
      repetir3 = True
+     repetir2_mini = True
      
      while repetir1:
           try: 
@@ -319,7 +320,7 @@ def emitir_ticket():
                               for posicion,especialidad_variable in enumerate(policlinica.lista_de_consultas): #en posicion se guarda la posicion por el enumerate, y en esp_variable el objeto
                                    if especialidad_variable.especialidad == especialidad:
                                         tuco_numero += 1
-                                        lista_consultas_especialidad.append([f"{tuco_numero} - Doctor: {especialidad_variable.nombre_medico} {especialidad_variable.apellido_medico}", f"Día de la consulta: {especialidad_variable.fecha_consulta} "])                
+                                        lista_consultas_especialidad.append([f"{tuco_numero} - Doctor: {especialidad_variable.nombre_medico}", f"Día de la consulta: {especialidad_variable.fecha_consulta} "])                
                                         encontrado.append(posicion)                    
                                         tuco = True
                               if lista_consultas_especialidad==[]:
@@ -327,6 +328,7 @@ def emitir_ticket():
                                    repetir1 = False
                                    tuco = True
                                    repetir2 = False
+                                   repetir2_mini = False
                                    repetir3 = False
                               else:
                                    print(lista_consultas_especialidad)          
@@ -351,17 +353,29 @@ def emitir_ticket():
           except ErrorTipeo as e:
                print (e)
      
-          
+     turno = None
      while repetir2:
           try: 
                opcion = int(input("Seleccione la opción deseada: "))
                if  0<opcion<=tuco_numero:
                     consulta = (policlinica.lista_de_consultas[encontrado[opcion-1]]) #accedo a la posicion-1 de encontrado, que tambien es un numero y se refiere a la consulta que me sirve
                     print(consulta.cantidad_pacientes)
+                    repetir2 = False
                else:
-                    raise ValueError ("Esa opción no es válida, ingrésela de nuevo.")
-          except ValueError as e:
-               print (e)
+                    raise (ValueError, TypeError) ("Esa opción no es válida, ingrésela de nuevo.")
+          except (ValueError, TypeError) as e:
+               print ("Esa opción no es válida, ingrésela de nuevo.")
+   
+     while repetir2_mini:
+          try:
+               opcion2 = int(input("Seleccione el numero de atención deseado :"))
+               if opcion2 not in consulta.cantidad_pacientes:
+                    raise (ValueError, TypeError) ("Esta opción no está disponible, elija un turno de los que aparecen en pantalla.")
+               else:
+                    turno = opcion2
+                    repetir2_mini = False
+          except (ValueError, TypeError) as e:
+               print ("Esta opción no está disponible, elija un turno de los que aparecen en pantalla.")
 
      while repetir3:
           try:
@@ -373,6 +387,17 @@ def emitir_ticket():
                    for socio_buscar in policlinica.lista_de_socios:
                           if socio_buscar.cedula == cedula:
                               x = True
+                              for especialidad_buscar in policlinica.lista_de_especialidades:
+                                   if consulta.especialidad == especialidad_buscar.nombre_especialidad:
+                                        if socio_buscar.tipo == 1:    
+                                             precio = especialidad_buscar.precio *0.8
+                                        else:
+                                             precio = especialidad_buscar.precio
+                                   break
+                              policlinica.lista_de_tickets.append([cedula, consulta.nombre_medico, turno, precio])
+                              consulta.cantidad_pacientes.remove(turno)             #para que saque el numero de turnos del array de la lista de pacientes
+                              socio_buscar.deuda += precio
+                              repetir3 = False
                    if x == False:
                         repetir3_mini = True
                         while repetir3_mini:
@@ -390,35 +415,74 @@ def emitir_ticket():
                                         raise ErrorTipeo ("El valor ingresado no es correcto, ingrese 1 o 2.")
                               except ErrorTipeo as e:
                                    print (e)
+                                  
           except ErrorTipeo as e:
                print (e)
+               
                
 
 
 
 def realizar_consulta():
+     repetir_menu = True
      repetir1 = True
      repetir2 = True
      repetir3 = True
      repetir4 = True
-     repetir5 = True
-     while repetir1:
+     while repetir_menu:
           try:
                print("1. Obtener todos los médicos asociados a una especialidad específica.")
                print("2. Obtener el precio de una consulta de una especialidad especifico")
                print("3.Listar todos los socios con sus deudas asociadas en orden ascendente")
                print("4. Realizar consultas respecto a cantidad de consultas entre dos fechas.")
-               print("5. Realizar consultas respecto a las ganancias obtenidas  enntre dos fechas.")
+               print("5. Realizar consultas respecto a las ganancias obtenidas  entre dos fechas.")
                print("6. Salir.")
                pregunta_inicial = int(input("selecciones una opcion :"))
                if pregunta_inicial != 1 and pregunta_inicial != 2 and pregunta_inicial != 3 and pregunta_inicial != 4 and pregunta_inicial != 5 and pregunta_inicial !=6:
                     raise (ValueError, TypeError)("La opción seleccionada no es correcta, vuelva a intentar con otra opción.")
                if pregunta_inicial==1:
-                    pass
+                    while repetir1:
+                         try:
+                              encontrado=False
+                              medicos_de_la_especialidad_a_mostar=[]
+                              especialidad=input("Ingrese la especialidad :")
+                              if not all(c.isalpha() or c.isspace() for c in especialidad):
+                                   raise ErrorTipeo("La especialidad no puede ser un numero o un string vacio, vuelva a ingresarla")
+                              for especialidad_a_buscar in policlinica.lista_de_medicos:
+                                   if especialidad_a_buscar.especialidad==especialidad:
+                                        encontrado=True
+                                        medicos_de_la_especialidad_a_mostar.append(especialidad_a_buscar.nombre, especialidad_a_buscar.apellido)
+                              if encontrado==True:
+                                   repetir1=False
+                                   print (medicos_de_la_especialidad_a_mostar)
+                              if encontrado==False:
+                                   print("la especialidad ingresada no esta dada de alta")
+                                   repetir1=False    
+                         except ErrorTipeo as e:
+                              print(e)
                if pregunta_inicial ==2:
-                    pass
+                    #try:
+                         while repetir2:
+                              especialidad=input("Ingrese la especialidad:")
+                              if all(c.isalpha() or c.isspace() for c in especialidad):
+                                   for especialidad_a_buscar in policlinica.lista_de_especialidades:
+                                        if especialidad_a_buscar.nombre_especialidad==especialidad:
+                                             especialidad=int(input("Ingrese el tipo de socio:"))
+                                             pass
+                                        else:
+                                             print("Esta especialidad no esta dada de alta")
+                                             repetir2=False
+                              else: 
+                                   print("La especialidad no puede ser un numero o un string vacio, vuelva a ingresarla")
+                    #except
+
                if pregunta_inicial ==3:
-                    pass
+                    lista_deudas = []
+                    for socio_buscar in policlinica.lista_de_socios:
+                         lista_deudas.append([socio_buscar.nombre, socio_buscar.deuda])
+
+                    lista_ordenada = sorted(lista_deudas, key=lambda x: x[1])   #x[1] se refiere a las deudas, lambda toma una tupla ej:(Juan, 200) y devuelve el segundo valor     
+                    print (lista_ordenada)
                if pregunta_inicial ==4:
                     pass
                if pregunta_inicial ==5:
@@ -426,9 +490,9 @@ def realizar_consulta():
                if pregunta_inicial ==6:
                     repetir1=False
           except ValueError as e:
-               print ("La opción seleccionada no es correcta, vuelva a intentar con otra opción.")    
+               print (e)    
           except TypeError as e:
-               print ("La opción seleccionada no es correcta, vuelva a intentar con otra opción.")    
+               print (e)    
               
 
                

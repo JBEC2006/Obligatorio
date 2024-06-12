@@ -33,27 +33,22 @@ class Policlinica:
     
     @lista_de_especialidades.setter
     def lista_de_especialidades(self, nueva_lista):
-        if nueva_lista!=[]:
             self.__lista_de_especialidades = nueva_lista
 
     @lista_de_socios.setter
     def lista_de_socios(self, nueva_lista):
-        if nueva_lista!=[]:
             self.__lista_de_socios = nueva_lista
 
     @lista_de_medicos.setter
     def lista_de_medicos(self, nueva_lista):
-        if nueva_lista!=[]:
             self.__lista_de_medicos = nueva_lista
 
     @lista_de_consultas.setter
     def lista_de_consultas(self, nueva_lista):
-        if nueva_lista!=[]:
             self.__lista_de_consultas = nueva_lista
 
     @lista_de_tickets.setter
     def lista_de_tickets(self, nueva_lista):
-        if nueva_lista!= []:
             self.__lista_de_tickets=nueva_lista
     
     
