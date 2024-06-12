@@ -9,6 +9,7 @@ class Policlinica:
         self.__lista_de_socios = []
         self.__lista_de_especialidades = []
         self.__lista_de_consultas = []
+        self.__lista_de_tickets=[]
 
     @property
     def lista_de_especialidades(self):
@@ -25,6 +26,10 @@ class Policlinica:
     @property
     def lista_de_consultas(self):
         return self.__lista_de_consultas
+
+    @property
+    def lista_de_tickets(self):
+        return self.__lista_de_tickets
     
     @lista_de_especialidades.setter
     def lista_de_especialidades(self, nueva_lista):
@@ -45,6 +50,11 @@ class Policlinica:
     def lista_de_consultas(self, nueva_lista):
         if nueva_lista!=[]:
             self.__lista_de_consultas = nueva_lista
+
+    @lista_de_tickets.setter
+    def lista_de_tickets(self, nueva_lista):
+        if nueva_lista!= []:
+            self.__lista_de_tickets=nueva_lista
     
     
 

@@ -1,6 +1,7 @@
 from entities.policlinica import Policlinica
 from exceptions.error_tipeo import ErrorTipeo
 from exceptions.entidad_ya_existe import EntidadYaExiste
+from exceptions.entidad_no_existe import EntidadNoExiste
 from datetime import datetime
 
 
@@ -16,7 +17,7 @@ def dar_alta_especialidad():
                 else:
                      for especialidad_buscar in policlinica.lista_de_especialidades:
                           if especialidad_buscar.nombre_especialidad == nombre_especialidad:
-                               raise EntidadYaExiste ("Esta especialidad ya está ingresada") #EntidadYaExiste
+                               raise EntidadYaExiste ("Esta especialidad ya está ingresada")
                      break     
             except ErrorTipeo as e:
                  print (e)
@@ -61,7 +62,11 @@ def dar_alta_socio():
               cedula = int(input("Ingrese la cédula de identidad sin puntos ni guiones:")) 
               if cedula>99999999 or cedula<10000000:
                    raise ErrorTipeo("No es una cédula válida, ingrese nuevamente una cédula de 8 dígitos.")                              
-              else: break
+              else: 
+                   for socio_buscar in policlinica.lista_de_socios:
+                          if socio_buscar.cedula == cedula:
+                               raise EntidadYaExiste ("Este socio ya está ingresado")
+                   break
          except ErrorTipeo as e:
                 print (e)
     while repetir4:
@@ -187,15 +192,15 @@ def dar_alta_medico():
                               print("Esta especialidad no está dada de alta.")
                               print ("1 - Volver a ingresar la especialidad")
                               print ("2 - Dar de alta esta especialidad")
-                              opcion=int(input("Elija una opción: "))
-                              if opcion == 1:
+                              opcion=(input("Elija una opción: "))
+                              if opcion == "1":
                                    repetir7_mini = False                                                        
-                              elif opcion == 2:
+                              elif opcion == "2":
                                    dar_alta_especialidad()
                                    repetir7_mini = False
                               else:
-                                   raise ValueError ("El valor ingresado no es correcto, ingrese 1 o 2")
-                         except ValueError as e:
+                                   raise ErrorTipeo ("El valor ingresado no es correcto, ingrese 1 o 2")
+                         except ErrorTipeo as e:
                               print (e)                       
          except ErrorTipeo as e:
                             print (e)
@@ -229,21 +234,19 @@ def dar_alta_consulta():
                               print("Esta especialidad no está dada de alta")
                               print ("1 - Volver a ingresar la especialidad")
                               print ("2 - Dar de alta esta especialidad")
-                              opcion=int(input("Elija una opción: "))
-                              if opcion == 1:
+                              opcion=(input("Elija una opción: "))
+                              if opcion == "1":
                                    repetir1_mini = False                                                       
-                              elif opcion == 2:
+                              elif opcion == "2":
                                    dar_alta_especialidad()
                                    repetir1_mini = False
                               else:
-                                   raise ValueError ("El valor ingresado no es correcto, ingrese 1 o 2.")
-                         except ValueError as e:
+                                   raise ErrorTipeo ("El valor ingresado no es correcto, ingrese 1 o 2.")
+                         except ErrorTipeo as e:
                               print (e)
                                                 
          except ErrorTipeo as e:
                print (e)
-         except ValueError as e:
-              print(e)
 
      while repetir2:
           try:
@@ -264,20 +267,18 @@ def dar_alta_consulta():
                                    print("Este medico no está dado de alta")
                                    print ("1 - Volver a ingresar el nombre del medico")
                                    print ("2 - Dar de alta el medico")
-                                   opcion=int(input("Elija una opción: "))
-                                   if opcion == 1:
+                                   opcion=(input("Elija una opción: "))
+                                   if opcion == "1":
                                         repetir2_mini = False                                                        
-                                   elif opcion == 2:
+                                   elif opcion == "2":
                                         dar_alta_medico()
                                         repetir2_mini = False
                                    else:
-                                        raise ValueError ("El valor ingresado no es correcto, vuelva a elegir una opción.")
-                              except ValueError as e:
+                                        raise ErrorTipeo ("El valor ingresado no es correcto, vuelva a elegir una opción.")
+                              except ErrorTipeo as e:
                                    print (e)
           except ErrorTipeo as e:
                print(e)
-          except ValueError as e:
-              print(e)
      
      while repetir3:
           try:
@@ -302,11 +303,10 @@ def emitir_ticket():
      repetir1 = True
      repetir2 = True
      repetir3 = True
-     repetir4 = True
-
+     
      while repetir1:
           try: 
-               encontrado = []          #guarda la posicion de las consultas en la lista real"
+               encontrado = []          #matriz donde se guarda la posicion de las consultas en la lista real"
                tuco_numero = 0
                tuco = False
                lista_consultas_especialidad = []
@@ -322,27 +322,32 @@ def emitir_ticket():
                                         lista_consultas_especialidad.append([f"{tuco_numero} - Doctor: {especialidad_variable.nombre_medico} {especialidad_variable.apellido_medico}", f"Día de la consulta: {especialidad_variable.fecha_consulta} "])                
                                         encontrado.append(posicion)                    
                                         tuco = True
-                              print(lista_consultas_especialidad)          
-                              repetir1 = False
+                              if lista_consultas_especialidad==[]:
+                                   print("No hay consultas para esa especialidad, te enviaremos al menú.")
+                                   repetir1 = False
+                                   tuco = True
+                                   repetir2 = False
+                                   repetir3 = False
+                              else:
+                                   print(lista_consultas_especialidad)          
+                                   repetir1 = False
                     if tuco == False:
                          repetir1_mini = True
                          while repetir1_mini:
                               try:
-                                   print("Esta especialidad no está dada de alta")
+                                   print("Esta especialidad no está dada de alta.")
                                    print ("1 - Volver a ingresar la especialidad")
                                    print ("2 - Dar de alta la especialidad")
-                                   opcion=int(input("Elija una opción: "))
-                                   if opcion == 1:           
+                                   opcion=(input("Elija una opción: "))
+                                   if opcion == "1":           
                                         repetir1_mini=False                                             
-                                   elif opcion == 2:
+                                   elif opcion == "2":
                                         dar_alta_especialidad()
                                         repetir1_mini=False
                                    else:
-                                        raise ValueError ("El valor ingresado no es correcto, ingrese 1 o 2.")
-                              except ValueError as e:
+                                        raise ErrorTipeo ("El valor ingresado no es correcto, ingrese 1 o 2.")
+                              except ErrorTipeo as e:
                                    print (e)
-          except ValueError as e:
-               print (e)
           except ErrorTipeo as e:
                print (e)
      
@@ -351,59 +356,118 @@ def emitir_ticket():
           try: 
                opcion = int(input("Seleccione la opción deseada: "))
                if  0<opcion<=tuco_numero:
-                    consulta = (policlinica.lista_de_consultas[encontrado[posicion-1]]) #accedo a la posicion-1 de encontrado, que tambien es un numero y se refiere a la consulta que me sirve
+                    consulta = (policlinica.lista_de_consultas[encontrado[opcion-1]]) #accedo a la posicion-1 de encontrado, que tambien es un numero y se refiere a la consulta que me sirve
                     print(consulta.cantidad_pacientes)
                else:
                     raise ValueError ("Esa opción no es válida, ingrésela de nuevo.")
-
-
-
           except ValueError as e:
                print (e)
+
+     while repetir3:
+          try:
+               cedula = int(input("Ingrese la cédula de identidad del socio sin puntos ni guiones:")) 
+               if cedula>99999999 or cedula<10000000:
+                   raise ErrorTipeo("No es una cédula válida, ingrese nuevamente una cédula de 8 dígitos.")                              
+               else: 
+                   x = False
+                   for socio_buscar in policlinica.lista_de_socios:
+                          if socio_buscar.cedula == cedula:
+                              x = True
+                   if x == False:
+                        repetir3_mini = True
+                        while repetir3_mini:
+                              try:
+                                   print("Este socio no está dada de alta")
+                                   print ("1 - Volver a ingresar el socio")
+                                   print ("2 - Dar de alta el socio")
+                                   opcion=(input("Elija una opción: "))
+                                   if opcion == "1":           
+                                        repetir3_mini=False                                             
+                                   elif opcion == "2":
+                                        dar_alta_socio()
+                                        repetir3_mini=False
+                                   else:
+                                        raise ErrorTipeo ("El valor ingresado no es correcto, ingrese 1 o 2.")
+                              except ErrorTipeo as e:
+                                   print (e)
           except ErrorTipeo as e:
                print (e)
+               
 
 
 
 def realizar_consulta():
-     pass
-     
+     repetir1 = True
+     repetir2 = True
+     repetir3 = True
+     repetir4 = True
+     repetir5 = True
+     while repetir1:
+          try:
+               print("1. Obtener todos los médicos asociados a una especialidad específica.")
+               print("2. Obtener el precio de una consulta de una especialidad especifico")
+               print("3.Listar todos los socios con sus deudas asociadas en orden ascendente")
+               print("4. Realizar consultas respecto a cantidad de consultas entre dos fechas.")
+               print("5. Realizar consultas respecto a las ganancias obtenidas  enntre dos fechas.")
+               print("6. Salir.")
+               pregunta_inicial = int(input("selecciones una opcion :"))
+               if pregunta_inicial != 1 and pregunta_inicial != 2 and pregunta_inicial != 3 and pregunta_inicial != 4 and pregunta_inicial != 5 and pregunta_inicial !=6:
+                    raise (ValueError, TypeError)("La opción seleccionada no es correcta, vuelva a intentar con otra opción.")
+               if pregunta_inicial==1:
+                    pass
+               if pregunta_inicial ==2:
+                    pass
+               if pregunta_inicial ==3:
+                    pass
+               if pregunta_inicial ==4:
+                    pass
+               if pregunta_inicial ==5:
+                    pass
+               if pregunta_inicial ==6:
+                    repetir1=False
+          except ValueError as e:
+               print ("La opción seleccionada no es correcta, vuelva a intentar con otra opción.")    
+          except TypeError as e:
+               print ("La opción seleccionada no es correcta, vuelva a intentar con otra opción.")    
               
-    
+
                
 
            
 def menu():
     repetir=True
     while repetir:
-        print("1. Dar de alta una especialidad")
-        print("2. Dar de alta un socio")
-        print("3. Dar de alta un médico")
-        print("4. Dar de alta una consulta médica")
-        print("5. Emitir un ticket de consulta")
-        print("6. Realizar consultas")
-        print("7. Salir del programa")
-        pregunta_inicial= int(input("Seleccione una opción del menú (1/2/3/4/5/6/7): "))
-        if pregunta_inicial != 1 and pregunta_inicial != 2 and pregunta_inicial != 3 and pregunta_inicial != 4 and pregunta_inicial != 5 and pregunta_inicial != 6 and pregunta_inicial != 7:
-            print("------------------")
-            print("La opción seleccionada no es correcta, vuelva a intentar con otra opción")
-            print("------------------")
-        if pregunta_inicial == 1:
-            dar_alta_especialidad()
-        if pregunta_inicial == 2:
-            dar_alta_socio()
-        if pregunta_inicial == 3:
-            dar_alta_medico()
-        if pregunta_inicial == 4:
-            dar_alta_consulta()
-        if pregunta_inicial == 5:
-            emitir_ticket()
-        if pregunta_inicial == 6:
-            realizar_consulta()
-        if pregunta_inicial == 7:
-            repetir=False
-            print("Fin")
-            
+        try:
+          print("1. Dar de alta una especialidad")
+          print("2. Dar de alta un socio")
+          print("3. Dar de alta un médico")
+          print("4. Dar de alta una consulta médica")
+          print("5. Emitir un ticket de consulta")
+          print("6. Realizar consultas")
+          print("7. Salir del programa")
+          pregunta_inicial=int(input("Seleccione una opción del menú (1/2/3/4/5/6/7): "))
+          if pregunta_inicial != 1 and pregunta_inicial != 2 and pregunta_inicial != 3 and pregunta_inicial != 4 and pregunta_inicial != 5 and pregunta_inicial != 6 and pregunta_inicial != 7:
+               raise (ValueError, TypeError) ("La opción ingresada no es correcta, vuelva a intentar con otra opción.")
+          
+          if pregunta_inicial == 1:
+               dar_alta_especialidad()
+          if pregunta_inicial == 2:
+               dar_alta_socio()
+          if pregunta_inicial == 3:
+               dar_alta_medico()
+          if pregunta_inicial == 4:
+               dar_alta_consulta()
+          if pregunta_inicial == 5:
+               emitir_ticket()
+          if pregunta_inicial == 6:
+               realizar_consulta()
+          if pregunta_inicial == 7:
+               repetir=False
+               print("Fin")
+        except ValueError:
+             print ("La opción seleccionada no es correcta, vuelva a intentar con otra opción.")
+        except TypeError:
+             print ("La opción seleccionada no es correcta, vuelva a intentar con otra opción.") 
 if __name__ == "__main__":
     policlinica = Policlinica()
     menu()
