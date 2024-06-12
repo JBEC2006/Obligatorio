@@ -250,7 +250,7 @@ def dar_alta_consulta():
 
      while repetir2:
           try:
-               nombre_medico = input("Ingrese el nombre del médico :")
+               nombre_medico = input("Ingrese el nombre completo del médico :")
                if not all(c.isalpha() or c.isspace() for c in nombre_medico) or nombre_medico == "":
                          raise ErrorTipeo("El nombre del medico es incorrecto, ingréselo nuevamente")
                else:
@@ -427,13 +427,14 @@ def realizar_consulta():
      repetir_menu = True
      repetir1 = True
      repetir2 = True
-     repetir3 = True
      repetir4 = True
+     repetir4_1 = True
+     repetir4_2 = True
      while repetir_menu:
           try:
                print("1. Obtener todos los médicos asociados a una especialidad específica.")
                print("2. Obtener el precio de una consulta de una especialidad especifico")
-               print("3.Listar todos los socios con sus deudas asociadas en orden ascendente")
+               print("3. Listar todos los socios con sus deudas asociadas en orden ascendente")
                print("4. Realizar consultas respecto a cantidad de consultas entre dos fechas.")
                print("5. Realizar consultas respecto a las ganancias obtenidas  entre dos fechas.")
                print("6. Salir.")
@@ -451,7 +452,7 @@ def realizar_consulta():
                               for especialidad_a_buscar in policlinica.lista_de_medicos:
                                    if especialidad_a_buscar.especialidad==especialidad:
                                         encontrado=True
-                                        medicos_de_la_especialidad_a_mostar.append(especialidad_a_buscar.nombre, especialidad_a_buscar.apellido)
+                                        medicos_de_la_especialidad_a_mostar.append([especialidad_a_buscar.nombre +" "+ especialidad_a_buscar.apellido])
                               if encontrado==True:
                                    repetir1=False
                                    print (medicos_de_la_especialidad_a_mostar)
@@ -461,30 +462,49 @@ def realizar_consulta():
                          except ErrorTipeo as e:
                               print(e)
                if pregunta_inicial ==2:
-                    #try:
                          while repetir2:
-                              especialidad=input("Ingrese la especialidad:")
-                              if all(c.isalpha() or c.isspace() for c in especialidad):
+                              try:
+                                   especialidad=input("Ingrese la especialidad:")
+                                   if all(c.isalpha() or c.isspace() for c in especialidad):
+                                        raise ErrorTipeo ("La especialidad no puede ser un numero o un string vacio, vuelva a ingresarla")
                                    for especialidad_a_buscar in policlinica.lista_de_especialidades:
                                         if especialidad_a_buscar.nombre_especialidad==especialidad:
                                              especialidad=int(input("Ingrese el tipo de socio:"))
-                                             pass
+                                             
                                         else:
                                              print("Esta especialidad no esta dada de alta")
                                              repetir2=False
-                              else: 
-                                   print("La especialidad no puede ser un numero o un string vacio, vuelva a ingresarla")
-                    #except
+                              except ErrorTipeo as e:
+                                   print(e)
 
                if pregunta_inicial ==3:
                     lista_deudas = []
                     for socio_buscar in policlinica.lista_de_socios:
                          lista_deudas.append([socio_buscar.nombre, socio_buscar.deuda])
-
                     lista_ordenada = sorted(lista_deudas, key=lambda x: x[1])   #x[1] se refiere a las deudas, lambda toma una tupla ej:(Juan, 200) y devuelve el segundo valor     
                     print (lista_ordenada)
                if pregunta_inicial ==4:
-                    pass
+                    while repetir4_1:
+                         try:
+                              fecha_inicial= input("Ingrese la fecha inicial en formato aaaa-mm-dd :")
+                              fecha_inicial_formato = datetime.strptime(fecha_inicial, "%Y-%m-%d")
+                              break
+                         except ValueError as e:
+                              print("No es una fecha válida, vuelva a ingresarla en el formato aaaa-mm-dd.")
+                    while repetir4_2:
+                         try:    
+                              fecha_final=input("Ingrese la fecha inicial en formato aaaa-mm-dd :")
+                              fecha_final_formato = datetime.strptime(fecha_final, "%Y-%m-%d")
+                              break
+                         except ValueError as e:
+                              print("No es una fecha válida, vuelva a ingresarla en el formato aaaa-mm-dd.")
+                    cantidad = 0
+                    for consulta in policlinica.lista_de_consultas:
+                         if fecha_inicial<=consulta.fecha_consulta<=fecha_final:
+                              cantidad =+ 1
+                    print(f"La cantidad de consultas entre {fecha_inicial} y {fecha_final} es {cantidad}")
+                                        
+                                        
                if pregunta_inicial ==5:
                     pass
                if pregunta_inicial ==6:
