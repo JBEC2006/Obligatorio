@@ -18,5 +18,5 @@ class Especialidad():
 
     @precio.setter
     def precio(self, nuevo_precio):
-        if nuevo_precio>0 and isinstance(nuevo_precio, int)==True:
+        if isinstance(nuevo_precio, int)==True:
             self.__precio = nuevo_precio

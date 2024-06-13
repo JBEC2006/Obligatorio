@@ -35,7 +35,7 @@ class Persona(ABC):
     
     @nombre.setter
     def nombre(self, nuevo_nombre):
-        if nuevo_nombre.isalpha()==True: #Si es un string que solo contiene elementos alfabeticos (sin espacios) return True
+        if all(c.isalpha() or c.isspace() for c in nuevo_nombre):
             self.__nombre = nuevo_nombre
 
     @apellido.setter

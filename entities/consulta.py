@@ -40,5 +40,5 @@ class Consulta():
         
     @cantidad_pacientes.setter
     def cantidad_pacientes(self, nueva_cantidad_de_pacientes):
-        if isinstance(nueva_cantidad_de_pacientes, int)==True and nueva_cantidad_de_pacientes>=0:
+        if isinstance(nueva_cantidad_de_pacientes, int)==True:
             self.__cantidad_pacientes = nueva_cantidad_de_pacientes
