@@ -397,12 +397,13 @@ def emitir_ticket():
                                    if consulta.especialidad == especialidad_buscar.nombre_especialidad:
                                         if socio_buscar.tipo == 1:    
                                              precio_socio = (especialidad_buscar.precio)*0.8
+                                             socio_buscar.deuda += precio_socio
                                         if socio_buscar.tipo == 2:
-                                             precio_socio = especialidad_buscar.precio                                   
+                                             precio_socio = especialidad_buscar.precio     
+                                             socio_buscar.deuda += precio_socio                              
                                    break
-                              print (socio_buscar.tipo)
-                              print (precio_socio)   
-                              socio_buscar.deuda += precio_socio 
+                              print (socio_buscar.deuda)
+                              print (precio_socio)    
                               policlinica.lista_de_tickets.append([cedula, consulta.nombre_medico, turno, precio_socio])
                               consulta.cantidad_pacientes.remove(turno)             #para que saque el numero de turnos del array de la lista de pacientes
                               repetir3 = False

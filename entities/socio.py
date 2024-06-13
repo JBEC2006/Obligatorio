@@ -20,5 +20,4 @@ class Socio(Persona):
     
     @deuda.setter
     def deuda(self, nueva_deuda):
-        if isinstance(nueva_deuda, int)==True and nueva_deuda>=0:
-            self.__deuda = nueva_deuda
+        self.__deuda = nueva_deuda
