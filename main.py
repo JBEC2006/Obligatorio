@@ -69,6 +69,11 @@ def dar_alta_socio():
                    break
          except ErrorTipeo as e:
                 print (e)
+         except EntidadYaExiste as e:
+              print(e)
+         except ValueError as e :
+              print ("No es una cédula válida, ingrese nuevamente una cédula de 8 dígitos.")
+              
     while repetir4:
          try:
               fecha_nacimiento = input("Ingrese la fecha de nacimiento en formato aaaa-mm-dd :")
@@ -101,7 +106,7 @@ def dar_alta_socio():
               else:break
          except ValueError as e:
               print ("El valor ingresado no es correcto, elija la opción 1 o 2.")
-    policlinica.dar_alta_socio_mini(nombre_socio, apellido_socio, cedula, fecha_nacimiento_formato, fecha_de_ingreso_formato, tipo, celular_socio)
+    policlinica.dar_alta_socio_mini(nombre_socio, apellido_socio, cedula, fecha_nacimiento_formato, fecha_de_ingreso_formato, celular_socio, tipo)
     print ("Se registró el socio con éxito")
 
 def dar_alta_medico():
@@ -387,16 +392,19 @@ def emitir_ticket():
                    for socio_buscar in policlinica.lista_de_socios:
                           if socio_buscar.cedula == cedula:
                               x = True
+                              precio_socio = None
                               for especialidad_buscar in policlinica.lista_de_especialidades:
                                    if consulta.especialidad == especialidad_buscar.nombre_especialidad:
                                         if socio_buscar.tipo == 1:    
-                                             precio = especialidad_buscar.precio *0.8
-                                        else:
-                                             precio = especialidad_buscar.precio
+                                             precio_socio = (especialidad_buscar.precio)*0.8
+                                        if socio_buscar.tipo == 2:
+                                             precio_socio = especialidad_buscar.precio                                   
                                    break
-                              policlinica.lista_de_tickets.append([cedula, consulta.nombre_medico, turno, precio])
+                              print (socio_buscar.tipo)
+                              print (precio_socio)   
+                              socio_buscar.deuda += precio_socio 
+                              policlinica.lista_de_tickets.append([cedula, consulta.nombre_medico, turno, precio_socio])
                               consulta.cantidad_pacientes.remove(turno)             #para que saque el numero de turnos del array de la lista de pacientes
-                              socio_buscar.deuda += precio
                               repetir3 = False
                    if x == False:
                         repetir3_mini = True
@@ -431,6 +439,8 @@ def realizar_consulta():
      repetir4 = True
      repetir4_1 = True
      repetir4_2 = True
+     repetir5_1 = True
+     repetir5_2 = True
      while repetir_menu:
           try:
                print("1. Obtener todos los médicos asociados a una especialidad específica.")
@@ -467,7 +477,7 @@ def realizar_consulta():
                               try:
                                    especialidad=input("Ingrese la especialidad:")
                                    if not all(c.isalpha() or c.isspace() for c in especialidad):
-                                        raise ErrorTipeo ("La especialidad no puede ser un numero o un string vacio, vuelva a ingresarla")
+                                        raise ErrorTipeo ("La especialidad no puede ser un numero o un string vacio, vuelva a ingresarla.")
                                    for especialidad_a_buscar in policlinica.lista_de_especialidades:
                                         if especialidad_a_buscar.nombre_especialidad==especialidad:
                                              encontrado=True
@@ -475,18 +485,19 @@ def realizar_consulta():
                                    if encontrado==True:
                                         while repetir2_mini:
                                              try:
-                                                  tipo_de_socio=int(input("Ingrese tipo de socio; 1- bonificado , 2- no bonificado: "))
-                                                  if tipo_de_socio!=2 or tipo_de_socio!=1:
-                                                       raise ErrorTipeo ("El tipo de socio solo puede ser 1- bonificado, 2- no bonificado, por favor ingrese 1 o 2")
+                                                  repetir2 = False
+                                                  tipo_de_socio=int(input("Ingrese tipo de socio; 1- bonificado , 2- no bonificado: "))                                                      
                                                   if tipo_de_socio==1:
                                                        precio_final=precio_incial*0.8
-                                                       print (f"El precio para una consulta de {especialidad} es {precio_final}")
+                                                       print (f"El precio para una consulta de {especialidad} es {precio_final}.")
                                                        repetir2_mini=False
                                                   if tipo_de_socio==2:
-                                                       print (f"El precio para una consulta de {especialidad} es {precio_incial}")
+                                                       print (f"El precio para una consulta de {especialidad} es {precio_incial}.")
                                                        repetir2_mini=False
+                                                  else:
+                                                       raise ErrorTipeo ("El tipo de socio solo puede ser 1- bonificado, 2- no bonificado, por favor ingrese 1 o 2")
                                              except ErrorTipeo as e:
-                                                  print (e)     
+                                                  print (e)                                  
                                    if encontrado==False:
                                              print("Esta especialidad no esta dada de alta")
                                              repetir2=False
@@ -496,22 +507,23 @@ def realizar_consulta():
                if pregunta_inicial ==3:
                     lista_deudas = []
                     for socio_buscar in policlinica.lista_de_socios:
-                         lista_deudas.append([socio_buscar.nombre, socio_buscar.deuda])
+                         lista_deudas.append([socio_buscar.nombre +" "+ socio_buscar.apellido, socio_buscar.deuda])
                     lista_ordenada = sorted(lista_deudas, key=lambda x: x[1])   #x[1] se refiere a las deudas, lambda toma una tupla ej:(Juan, 200) y devuelve el segundo valor     
                     print (lista_ordenada)
+              
                if pregunta_inicial ==4:
                     while repetir4_1:
                          try:
                               fecha_inicial= input("Ingrese la fecha inicial en formato aaaa-mm-dd :")
                               fecha_inicial_formato = datetime.strptime(fecha_inicial, "%Y-%m-%d")
-                              break
+                              repetir4_1=False
                          except ValueError as e:
                               print("No es una fecha válida, vuelva a ingresarla en el formato aaaa-mm-dd.")
                     while repetir4_2:
                          try:    
                               fecha_final=input("Ingrese la fecha inicial en formato aaaa-mm-dd :")
                               fecha_final_formato = datetime.strptime(fecha_final, "%Y-%m-%d")
-                              break
+                              repetir4_2=False
                          except ValueError as e:
                               print("No es una fecha válida, vuelva a ingresarla en el formato aaaa-mm-dd.")
                     cantidad = 0
@@ -522,6 +534,26 @@ def realizar_consulta():
                                         
                                         
                if pregunta_inicial ==5:
+                    while repetir5_1:
+                         try:
+                              fecha_inicial= input("Ingrese la fecha inicial en formato aaaa-mm-dd :")
+                              fecha_inicial_formato = datetime.strptime(fecha_inicial, "%Y-%m-%d")
+                              repetir4_1=False
+                         except ValueError as e:
+                              print("No es una fecha válida, vuelva a ingresarla en el formato aaaa-mm-dd.")
+                    while repetir5_2:
+                         try:    
+                              fecha_final=input("Ingrese la fecha inicial en formato aaaa-mm-dd :")
+                              fecha_final_formato = datetime.strptime(fecha_final, "%Y-%m-%d")
+                              repetir4_2=False
+                         except ValueError as e:
+                              print("No es una fecha válida, vuelva a ingresarla en el formato aaaa-mm-dd.")
+                    ganancias=0
+                    for ganancias_u in policlinica.lista_de_tickets:
+                         ganancias+=ganancias_u.precio
+                    print (f"las ganancias obtenidas dentro de {fecha_inicial} y {fecha_final} fueron {ganancias}")
+               #5. Realizar consultas respecto a las ganancias obtenidas entre dos fechas
+
                     pass
                if pregunta_inicial ==6:
                     repetir_menu=False
