@@ -427,6 +427,7 @@ def realizar_consulta():
      repetir_menu = True
      repetir1 = True
      repetir2 = True
+     repetir2_mini = True
      repetir4 = True
      repetir4_1 = True
      repetir4_2 = True
@@ -465,13 +466,28 @@ def realizar_consulta():
                          while repetir2:
                               try:
                                    especialidad=input("Ingrese la especialidad:")
-                                   if all(c.isalpha() or c.isspace() for c in especialidad):
+                                   if not all(c.isalpha() or c.isspace() for c in especialidad):
                                         raise ErrorTipeo ("La especialidad no puede ser un numero o un string vacio, vuelva a ingresarla")
                                    for especialidad_a_buscar in policlinica.lista_de_especialidades:
                                         if especialidad_a_buscar.nombre_especialidad==especialidad:
-                                             especialidad=int(input("Ingrese el tipo de socio:"))
-                                             
-                                        else:
+                                             encontrado=True
+                                             precio_incial=especialidad_a_buscar.precio
+                                   if encontrado==True:
+                                        while repetir2_mini:
+                                             try:
+                                                  tipo_de_socio=int(input("Ingrese tipo de socio; 1- bonificado , 2- no bonificado: "))
+                                                  if tipo_de_socio!=2 or tipo_de_socio!=1:
+                                                       raise ErrorTipeo ("El tipo de socio solo puede ser 1- bonificado, 2- no bonificado, por favor ingrese 1 o 2")
+                                                  if tipo_de_socio==1:
+                                                       precio_final=precio_incial*0.8
+                                                       print (f"El precio para una consulta de {especialidad} es {precio_final}")
+                                                       repetir2_mini=False
+                                                  if tipo_de_socio==2:
+                                                       print (f"El precio para una consulta de {especialidad} es {precio_incial}")
+                                                       repetir2_mini=False
+                                             except ErrorTipeo as e:
+                                                  print (e)     
+                                   if encontrado==False:
                                              print("Esta especialidad no esta dada de alta")
                                              repetir2=False
                               except ErrorTipeo as e:
@@ -508,7 +524,7 @@ def realizar_consulta():
                if pregunta_inicial ==5:
                     pass
                if pregunta_inicial ==6:
-                    repetir1=False
+                    repetir_menu=False
           except ValueError as e:
                print (e)    
           except TypeError as e:
