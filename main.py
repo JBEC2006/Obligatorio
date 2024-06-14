@@ -262,9 +262,13 @@ def dar_alta_consulta():
                     encontrado = False
                     for medico_a_buscar in policlinica.lista_de_medicos: 
                          if medico_a_buscar.nombre +" "+ medico_a_buscar.apellido == nombre_medico:  #para comparar el nombre de cada uno, y no un objeto con el nombre
-                              encontrado = True                       #se pone.nombre para que sepa que tiene que comparar eso de la lista
-                              repetir2 = False
-                              break                    
+                              pass                    
+                              if especialidad == medico_a_buscar.especialidad:
+                                   encontrado = True
+                                   repetir2 = False
+                                   break
+                              else:
+                                   raise ErrorTipeo ("El médico ya existe pero tiene otra especialidad.")                    
                     if not encontrado:
                          repetir2_mini = True
                          while repetir2_mini:
@@ -401,9 +405,7 @@ def emitir_ticket():
                                         if socio_buscar.tipo == 2:
                                              precio_socio = especialidad_buscar.precio     
                                              socio_buscar.deuda += precio_socio                              
-                                   break
-                              print (socio_buscar.deuda)
-                              print (precio_socio)    
+                                   break    
                               policlinica.lista_de_tickets.append([cedula, consulta.nombre_medico, turno, precio_socio])
                               consulta.cantidad_pacientes.remove(turno)             #para que saque el numero de turnos del array de la lista de pacientes
                               repetir3 = False
