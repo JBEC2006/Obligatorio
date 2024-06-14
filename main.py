@@ -12,7 +12,7 @@ def dar_alta_especialidad():
         while repetir1:
             try:
                 nombre_especialidad = input("Ingrese el nombre de la especialidad :")
-                if not all(c.isalpha() or c.isspace() for c in nombre_especialidad) or nombre_especialidad == "":       #si no hay escrito texto, con o sin espacio
+                if not all(c.isalpha() or c.isspace() for c in nombre_especialidad) or nombre_especialidad == " ":       #si no hay escrito texto, con o sin espacio
                     raise ErrorTipeo("El nombre de la especialidad es incorrecto, ingréselo nuevamente")
                 else:
                      for especialidad_buscar in policlinica.lista_de_especialidades:
@@ -44,7 +44,7 @@ def dar_alta_socio():
     while repetir1:
           try:
                nombre_socio = input("Ingrese el nombre :")
-               if not all(c.isalpha() or c.isspace() for c in nombre_socio) or nombre_socio == "":       
+               if not all(c.isalpha() or c.isspace() for c in nombre_socio) or nombre_socio == " ":       
                     raise ErrorTipeo("No es un nombre válido, ingréselo de nuevo")
                else: break
           except ErrorTipeo as e:
@@ -52,7 +52,7 @@ def dar_alta_socio():
     while repetir2:
          try:
               apellido_socio = input("Ingrese el apellido :")
-              if not all(c.isalpha() or c.isspace() for c in apellido_socio) or apellido_socio == "":       
+              if not all(c.isalpha() or c.isspace() for c in apellido_socio) or apellido_socio == " ":       
                     raise ErrorTipeo("No es un apellido válido, ingréselo de nuevo")
               else: break
          except ErrorTipeo as e:
@@ -120,7 +120,7 @@ def dar_alta_medico():
     while repetir1:
           try:
                nombre_medico = input("Ingrese el nombre :")
-               if not all(c.isalpha() or c.isspace() for c in nombre_medico) or nombre_medico == "":       
+               if not all(c.isalpha() or c.isspace() for c in nombre_medico) or nombre_medico == " ":       
                     raise ErrorTipeo("No es un nombre válido, ingréselo de nuevo")
                else: break
           except ErrorTipeo as e:
@@ -128,7 +128,7 @@ def dar_alta_medico():
     while repetir2:
          try:
               apellido_medico = input("Ingrese el apellido :")
-              if not all(c.isalpha() or c.isspace() for c in apellido_medico) or apellido_medico == "":       
+              if not all(c.isalpha() or c.isspace() for c in apellido_medico) or apellido_medico == " ":       
                     raise ErrorTipeo("No es un apellido válido, ingréselo de nuevo")
               else: break
          except ErrorTipeo as e:
@@ -178,12 +178,12 @@ def dar_alta_medico():
     while repetir7:
          try:
               especialidad = input("Ingrese la especialidad :")
-              if not all(c.isalpha() or c.isspace() for c in especialidad) or especialidad == "":
+              if not all(c.isalpha() or c.isspace() for c in especialidad) or especialidad == " ":
                     raise ErrorTipeo("El nombre de la especialidad es incorrecto, ingréselo nuevamente")
               else:
                 encontrado = False
                 for especialidad_buscar in policlinica.lista_de_especialidades:
-                    if especialidad_buscar.nombre_especialidad == especialidad:  #para comparar el nombre de cada uno, y no un objeto con el nombre
+                    if especialidad_buscar.nombre_especialidad == especialidad: 
                         encontrado = True
                         policlinica.dar_alta_medico_mini(nombre_medico, apellido_medico, cedula, fecha_nacimiento, fecha_de_ingreso, celular_medico, especialidad)
                         print ("El médico se dio de alta con éxito.")
@@ -223,12 +223,12 @@ def dar_alta_consulta():
      while repetir1:
          try:
               especialidad = input("Ingrese la especialidad :")
-              if not all(c.isalpha() or c.isspace() for c in especialidad) or especialidad == "":
+              if not all(c.isalpha() or c.isspace() for c in especialidad) or especialidad == " ":
                     raise ErrorTipeo("El nombre de la especialidad es incorrecto, ingréselo nuevamente")
               else:
                 encontrado = False
                 for especialidad_buscar in policlinica.lista_de_especialidades: 
-                    if especialidad_buscar.nombre_especialidad == especialidad:  #para comparar el nombre de cada uno, y no un objeto con el nombre
+                    if especialidad_buscar.nombre_especialidad == especialidad:
                         encontrado = True
                         repetir1 = False
                         break
@@ -256,13 +256,12 @@ def dar_alta_consulta():
      while repetir2:
           try:
                nombre_medico = input("Ingrese el nombre completo del médico :")
-               if not all(c.isalpha() or c.isspace() for c in nombre_medico) or nombre_medico == "":
+               if not all(c.isalpha() or c.isspace() for c in nombre_medico) or nombre_medico == " ":
                          raise ErrorTipeo("El nombre del medico es incorrecto, ingréselo nuevamente")
                else:
                     encontrado = False
                     for medico_a_buscar in policlinica.lista_de_medicos: 
-                         if medico_a_buscar.nombre +" "+ medico_a_buscar.apellido == nombre_medico:  #para comparar el nombre de cada uno, y no un objeto con el nombre
-                              pass                    
+                         if medico_a_buscar.nombre +" "+ medico_a_buscar.apellido == nombre_medico:                    
                               if especialidad == medico_a_buscar.especialidad:
                                    encontrado = True
                                    repetir2 = False
@@ -301,8 +300,10 @@ def dar_alta_consulta():
           try:
                cantidad_pacientes = int(input("Ingrese la cantidad de pacientes que se atenderán :"))
                turno = []
+               if cantidad_pacientes<=0:
+                    raise ValueError
                for i in range (cantidad_pacientes):
-                    turno.append(i+1)
+                    turno.append(i+1) #para que no ponga 0 al principio
                policlinica.dar_alta_consulta_mini(especialidad, nombre_medico, fecha_consulta, turno)
                repetir4 = False
           except ValueError as e:
@@ -321,7 +322,7 @@ def emitir_ticket():
                tuco = False
                lista_consultas_especialidad = []
                especialidad = input("Ingrese la especialidad :")
-               if not all(c.isalpha() or c.isspace() for c in especialidad) or especialidad== "":
+               if not all(c.isalpha() or c.isspace() for c in especialidad) or especialidad== " ":
                               raise ErrorTipeo("La especialidad debe ser un string")
                else:
                     for especialidad_a_buscar in policlinica.lista_de_especialidades:
@@ -371,7 +372,7 @@ def emitir_ticket():
                     print(consulta.cantidad_pacientes)
                     repetir2 = False
                else:
-                    raise (ValueError, TypeError) ("Esa opción no es válida, ingrésela de nuevo.")
+                    raise ValueError ("Esa opción no es válida, ingrésela de nuevo.")
           except (ValueError, TypeError) as e:
                print ("Esa opción no es válida, ingrésela de nuevo.")
    
@@ -379,7 +380,7 @@ def emitir_ticket():
           try:
                opcion2 = int(input("Seleccione el numero de atención deseado :"))
                if opcion2 not in consulta.cantidad_pacientes:
-                    raise (ValueError, TypeError) ("Esta opción no está disponible, elija un turno de los que aparecen en pantalla.")
+                    raise ValueError ("Esta opción no está disponible, elija un turno de los que aparecen en pantalla.")
                else:
                     turno = opcion2
                     repetir2_mini = False
@@ -406,7 +407,7 @@ def emitir_ticket():
                                              precio_socio = especialidad_buscar.precio     
                                              socio_buscar.deuda += precio_socio                              
                                    break    
-                              policlinica.lista_de_tickets.append([cedula, consulta.nombre_medico, turno, precio_socio])
+                              policlinica.lista_de_tickets.append([cedula, consulta.nombre_medico, turno, precio_socio, consulta.fecha_consulta])
                               consulta.cantidad_pacientes.remove(turno)             #para que saque el numero de turnos del array de la lista de pacientes
                               repetir3 = False
                    if x == False:
@@ -450,11 +451,11 @@ def realizar_consulta():
                print("2. Obtener el precio de una consulta de una especialidad especifico")
                print("3. Listar todos los socios con sus deudas asociadas en orden ascendente")
                print("4. Realizar consultas respecto a cantidad de consultas entre dos fechas.")
-               print("5. Realizar consultas respecto a las ganancias obtenidas  entre dos fechas.")
+               print("5. Realizar consultas respecto a las ganancias obtenidas entre dos fechas.")
                print("6. Salir.")
                pregunta_inicial = int(input("selecciones una opcion :"))
                if pregunta_inicial != 1 and pregunta_inicial != 2 and pregunta_inicial != 3 and pregunta_inicial != 4 and pregunta_inicial != 5 and pregunta_inicial !=6:
-                    raise (ValueError, TypeError)("La opción seleccionada no es correcta, vuelva a intentar con otra opción.")
+                    raise ValueError("La opción seleccionada no es correcta, vuelva a intentar con otra opción.")
                if pregunta_inicial==1:
                     while repetir1:
                          try:
@@ -515,6 +516,8 @@ def realizar_consulta():
                     print (lista_ordenada)
               
                if pregunta_inicial ==4:
+                    repetir4_1 = True
+                    repetir4_2 = True
                     while repetir4_1:
                          try:
                               fecha_inicial= input("Ingrese la fecha inicial en formato aaaa-mm-dd :")
@@ -524,36 +527,55 @@ def realizar_consulta():
                               print("No es una fecha válida, vuelva a ingresarla en el formato aaaa-mm-dd.")
                     while repetir4_2:
                          try:    
-                              fecha_final=input("Ingrese la fecha inicial en formato aaaa-mm-dd :")
+                              fecha_final=input("Ingrese la fecha final en formato aaaa-mm-dd :")
                               fecha_final_formato = datetime.strptime(fecha_final, "%Y-%m-%d")
-                              repetir4_2=False
+                              fecha_inicial_formato = datetime.strptime(fecha_inicial, "%Y-%m-%d")
+                              if fecha_final_formato>=fecha_inicial_formato:
+                                   repetir4_2=False
+                              else:
+                                   raise ErrorTipeo ("La fecha final es menor que la inicial, vuelva a ingresarla.")
                          except ValueError as e:
                               print("No es una fecha válida, vuelva a ingresarla en el formato aaaa-mm-dd.")
+                         except ErrorTipeo as e:
+                              print (e)
                     cantidad = 0
                     for consulta in policlinica.lista_de_consultas:
                          if fecha_inicial<=consulta.fecha_consulta<=fecha_final:
-                              cantidad =+ 1
+                              cantidad += 1
                     print(f"La cantidad de consultas entre {fecha_inicial} y {fecha_final} es {cantidad}")
+                    
                                         
                                         
                if pregunta_inicial ==5:
+                    repetir5_1 = True
+                    repetir5_2 = True
                     while repetir5_1:
                          try:
                               fecha_inicial= input("Ingrese la fecha inicial en formato aaaa-mm-dd :")
                               fecha_inicial_formato = datetime.strptime(fecha_inicial, "%Y-%m-%d")
-                              repetir4_1=False
+                              repetir5_1=False
                          except ValueError as e:
                               print("No es una fecha válida, vuelva a ingresarla en el formato aaaa-mm-dd.")
                     while repetir5_2:
                          try:    
-                              fecha_final=input("Ingrese la fecha inicial en formato aaaa-mm-dd :")
+                              fecha_final=input("Ingrese la fecha final en formato aaaa-mm-dd :")
                               fecha_final_formato = datetime.strptime(fecha_final, "%Y-%m-%d")
-                              repetir4_2=False
+                              fecha_inicial_formato = datetime.strptime(fecha_inicial, "%Y-%m-%d")
+                              if fecha_final_formato >= fecha_inicial_formato:
+                                   repetir5_2=False
+                              else:
+                                   raise ErrorTipeo ("La fecha final es menor que la inicial, vuelva a ingresarla.")
                          except ValueError as e:
                               print("No es una fecha válida, vuelva a ingresarla en el formato aaaa-mm-dd.")
+                         except ErrorTipeo as e:
+                              print (e)
                     ganancias=0
                     for ganancias_u in policlinica.lista_de_tickets:
-                         ganancias+=ganancias_u.precio
+                         ganancias_u_formato = datetime.strptime(ganancias_u[4], "%Y-%m-%d")
+                         fecha_final_formato = datetime.strptime(fecha_final, "%Y-%m-%d")
+                         fecha_inicial_formato = datetime.strptime(fecha_inicial, "%Y-%m-%d")
+                         if fecha_inicial_formato<=ganancias_u_formato<=fecha_final_formato:
+                              ganancias+=ganancias_u[3]
                     print (f"las ganancias obtenidas dentro de {fecha_inicial} y {fecha_final} fueron {ganancias}")
                #5. Realizar consultas respecto a las ganancias obtenidas entre dos fechas
 
@@ -582,7 +604,7 @@ def menu():
           print("7. Salir del programa")
           pregunta_inicial=int(input("Seleccione una opción del menú (1/2/3/4/5/6/7): "))
           if pregunta_inicial != 1 and pregunta_inicial != 2 and pregunta_inicial != 3 and pregunta_inicial != 4 and pregunta_inicial != 5 and pregunta_inicial != 6 and pregunta_inicial != 7:
-               raise (ValueError, TypeError) ("La opción ingresada no es correcta, vuelva a intentar con otra opción.")
+               raise ValueError ("La opción ingresada no es correcta, vuelva a intentar con otra opción.")
           
           if pregunta_inicial == 1:
                dar_alta_especialidad()
