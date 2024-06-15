@@ -58,7 +58,7 @@ class Policlinica:
     
     
     def dar_alta_especialidad_mini(self, nombre_especialidad, precio):
-        especialidad = Especialidad(nombre_especialidad, precio)        #crea un objeto especialidad parea agregarlo a la lista
+        especialidad = Especialidad(nombre_especialidad, precio)        
         self.__lista_de_especialidades.append(especialidad)
         
     def dar_alta_socio_mini(self, nombre_socio, apellido, cedula, fecha_nacimiento, fecha_ingreso, tipo, celular):

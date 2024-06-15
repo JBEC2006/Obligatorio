@@ -26,10 +26,15 @@ def dar_alta_especialidad():
 
         while repetir2:
             try:                                                                              
-                precio = int(input("Ingrese el precio asociado :"))                               
-                repetir2 = False
-                print("la especialidad se ha creado con exito")
-                policlinica.dar_alta_especialidad_mini(nombre_especialidad, precio)
+                precio = int(input("Ingrese el precio asociado :"))
+                if precio < 0:
+                     raise ErrorTipeo ("El precio no puede ser menor que cero, vuelva a ingresarlo.")
+                else:
+                    repetir2 = False
+                    print("la especialidad se ha creado con exito")
+                    policlinica.dar_alta_especialidad_mini(nombre_especialidad, precio)
+            except ErrorTipeo as e:
+                 print (e)
             except ValueError as e:
                 print ("El precio de la especialidad es incorrecto, ingréselo nuevamente")
 
@@ -82,18 +87,23 @@ def dar_alta_socio():
          except ValueError as e:
               print ("No es una fecha válida, vuelva a ingresarla en el formato aaaa-mm-dd.")
     while repetir5:
-         try:
+          try:
               fecha_de_ingreso = input("Ingrese la fecha de ingreso a la institución en formato aaaa-mm-dd:")
               fecha_de_ingreso_formato = datetime.strptime(fecha_de_ingreso, "%Y-%m-%d")
+              fecha_nacimiento_formato = datetime.strptime(fecha_nacimiento, "%Y-%m-%d")
+              if fecha_de_ingreso_formato<fecha_nacimiento_formato:
+                   raise ErrorTipeo ("La fecha de ingreso no puede ser anterior que la de nacimiento.")
               break
-         except ValueError as e:
+          except ValueError as e:
               print ("No es una fecha válida, vuelva a ingresarla en el formato aaaa-mm-dd.")
+          except ErrorTipeo as e:
+               print (e)
+        
     while repetir6:
          try:
               celular_socio = int(input("Ingrese el número de celular:"))
-              celular_sin_primer_digito = int(str(celular_socio)[0:]) #Se le saca el digito de la posicion 0
+              celular_sin_primer_digito = int(str(celular_socio)[0:])
               if celular_sin_primer_digito>99999999 or celular_sin_primer_digito<10000000:
-              #La letra no especifica que los dos primeros digitos deberan ser "09"
                    raise ErrorTipeo("No es un número de celular válido, ingrese un número con el formato 09XXXXXXX")
               else:break
          except ErrorTipeo as e:
@@ -106,7 +116,7 @@ def dar_alta_socio():
               else:break
          except ValueError as e:
               print ("El valor ingresado no es correcto, elija la opción 1 o 2.")
-    policlinica.dar_alta_socio_mini(nombre_socio, apellido_socio, cedula, fecha_nacimiento_formato, fecha_de_ingreso_formato, celular_socio, tipo)
+    policlinica.dar_alta_socio_mini(nombre_socio, apellido_socio, cedula, fecha_nacimiento, fecha_de_ingreso, celular_socio, tipo)
     print ("Se registró el socio con éxito")
 
 def dar_alta_medico():
@@ -157,18 +167,22 @@ def dar_alta_medico():
          except ValueError as e:
               print ("No es una fecha válida, vuelva a ingresarla en el formato aaaa-mm-dd.")
     while repetir5:
-         try:
+          try:
               fecha_de_ingreso = input("Ingrese la fecha de ingreso a la institución en formato aaaa-mm-dd:")
               fecha_de_ingreso_formato = datetime.strptime(fecha_de_ingreso, "%Y-%m-%d")
+              fecha_nacimiento_formato = datetime.strptime(fecha_nacimiento, "%Y-%m-%d")
+              if fecha_de_ingreso_formato<fecha_nacimiento_formato:    #la mayor es la más nueva
+                   raise ErrorTipeo ("La fecha de ingreso no puede ser anterior que la de nacimiento.")
               break
-         except ValueError as e:
+          except ValueError as e:
               print ("No es una fecha válida, vuelva a ingresarla en el formato aaaa-mm-dd.")
+          except ErrorTipeo as e:
+               print (e)
     while repetir6:
          try:
               celular_medico = int(input("Ingrese el número de celular:"))
-              celular_sin_primer_digito = int(str(celular_medico)[0:]) #Se le saca el digito de la posicion 0
+              celular_sin_primer_digito = int(str(celular_medico)[0:])
               if celular_sin_primer_digito>99999999 or celular_sin_primer_digito<10000000:
-              #La letra no especifica que los dos primeros digitos deberan ser "09"
                    raise ErrorTipeo("No es un número de celular válido, ingrese un número con el formato 09XXXXXXX")
               else:break
          except ErrorTipeo as e:
@@ -456,6 +470,7 @@ def realizar_consulta():
                pregunta_inicial = int(input("selecciones una opcion :"))
                if pregunta_inicial != 1 and pregunta_inicial != 2 and pregunta_inicial != 3 and pregunta_inicial != 4 and pregunta_inicial != 5 and pregunta_inicial !=6:
                     raise ValueError("La opción seleccionada no es correcta, vuelva a intentar con otra opción.")
+               
                if pregunta_inicial==1:
                     while repetir1:
                          try:
@@ -470,10 +485,12 @@ def realizar_consulta():
                                         medicos_de_la_especialidad_a_mostar.append([especialidad_a_buscar.nombre +" "+ especialidad_a_buscar.apellido])
                               if encontrado==True:
                                    repetir1=False
+                                   repetir_menu = False
                                    print (medicos_de_la_especialidad_a_mostar)
                               if encontrado==False:
                                    print("la especialidad ingresada no esta dada de alta")
-                                   repetir1=False    
+                                   repetir1=False
+                                   repetir_menu = False
                          except ErrorTipeo as e:
                               print(e)
                if pregunta_inicial ==2:
@@ -487,24 +504,14 @@ def realizar_consulta():
                                              encontrado=True
                                              precio_incial=especialidad_a_buscar.precio
                                    if encontrado==True:
-                                        while repetir2_mini:
-                                             try:
-                                                  repetir2 = False
-                                                  tipo_de_socio=int(input("Ingrese tipo de socio; 1- bonificado , 2- no bonificado: "))                                                      
-                                                  if tipo_de_socio==1:
-                                                       precio_final=precio_incial*0.8
-                                                       print (f"El precio para una consulta de {especialidad} es {precio_final}.")
-                                                       repetir2_mini=False
-                                                  if tipo_de_socio==2:
-                                                       print (f"El precio para una consulta de {especialidad} es {precio_incial}.")
-                                                       repetir2_mini=False
-                                                  else:
-                                                       raise ErrorTipeo ("El tipo de socio solo puede ser 1- bonificado, 2- no bonificado, por favor ingrese 1 o 2")
-                                             except ErrorTipeo as e:
-                                                  print (e)                                  
+                                        precio_socio_no_bonificado=precio_incial
+                                        precio_socio_bonificado=precio_socio_no_bonificado*0.8
+                                        print (f"El precio para una consulta de {especialidad} para un socio no bonificado es {precio_socio_no_bonificado}.")
+                                        print (f"El precio para una consulta de {especialidad} para un socio no bonificado es {precio_socio_bonificado}.")                              
                                    if encontrado==False:
                                              print("Esta especialidad no esta dada de alta")
                                              repetir2=False
+                                             repetir_menu = False
                               except ErrorTipeo as e:
                                    print(e)
 
@@ -514,6 +521,7 @@ def realizar_consulta():
                          lista_deudas.append([socio_buscar.nombre +" "+ socio_buscar.apellido, socio_buscar.deuda])
                     lista_ordenada = sorted(lista_deudas, key=lambda x: x[1])   #x[1] se refiere a las deudas, lambda toma una tupla ej:(Juan, 200) y devuelve el segundo valor     
                     print (lista_ordenada)
+                    repetir_menu=False
               
                if pregunta_inicial ==4:
                     repetir4_1 = True
@@ -532,6 +540,7 @@ def realizar_consulta():
                               fecha_inicial_formato = datetime.strptime(fecha_inicial, "%Y-%m-%d")
                               if fecha_final_formato>=fecha_inicial_formato:
                                    repetir4_2=False
+                                   repetir_menu=False
                               else:
                                    raise ErrorTipeo ("La fecha final es menor que la inicial, vuelva a ingresarla.")
                          except ValueError as e:
@@ -563,6 +572,7 @@ def realizar_consulta():
                               fecha_inicial_formato = datetime.strptime(fecha_inicial, "%Y-%m-%d")
                               if fecha_final_formato >= fecha_inicial_formato:
                                    repetir5_2=False
+                                   repetir_menu=False
                               else:
                                    raise ErrorTipeo ("La fecha final es menor que la inicial, vuelva a ingresarla.")
                          except ValueError as e:
@@ -577,9 +587,6 @@ def realizar_consulta():
                          if fecha_inicial_formato<=ganancias_u_formato<=fecha_final_formato:
                               ganancias+=ganancias_u[3]
                     print (f"las ganancias obtenidas dentro de {fecha_inicial} y {fecha_final} fueron {ganancias}")
-               #5. Realizar consultas respecto a las ganancias obtenidas entre dos fechas
-
-                    pass
                if pregunta_inicial ==6:
                     repetir_menu=False
           except ValueError as e:
@@ -628,3 +635,4 @@ def menu():
 if __name__ == "__main__":
     policlinica = Policlinica()
     menu()
+
