@@ -1,7 +1,6 @@
 from entities.policlinica import Policlinica
 from exceptions.error_tipeo import ErrorTipeo
 from exceptions.entidad_ya_existe import EntidadYaExiste
-from exceptions.entidad_no_existe import EntidadNoExiste
 from datetime import datetime
 
 
